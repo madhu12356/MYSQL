@@ -1,0 +1,112 @@
+join--> to fetch data from multiple tables
+
+1] inner join --> to get matched data from both tables
+2] outer join -->|
+                 |-->left join
+                 |-->right join
+                 |-->full join
+3] cross join
+4] self join
+
+
+
+      [   1 2           ]         [      1 2        ]                 
+      |   3 4           |         |      3 6        |               
+      |    5            |         |       7         | 
+      |                 |         |                 | 
+      [_________________|         [_________________]
+
+
+                        
+               LEFT         INNER          RIGHT
+                        [     1   2    ]
+                        |       3      |   
+                 4 5    |              |    6 7
+                        |______________|
+                        
+                        
+                        
+                        
+/*
+JOINS
+		INNER JOIN
+		OUTER JOIN  -->LEFT
+					   RIGHT
+					   FULL
+		CROSS JOIN
+		SELF JOIN
+*/
+
+--INNER JOIN --matching data from all the tables
+
+create table employee(eid int,
+					  name varchar(20),
+					  loc varchar(20));
+
+alter table employee add pid int 
+
+
+insert into employee values(100,'immu','hyd',1);
+
+insert into employee values(101,'immu','hyd',2),(102,'immu','hyd',3),(103,'immu','hyd',4),(104,'immu','hyd',5);
+
+select * from employee;
+
+
+
+create table product(proid int,
+					  pname varchar(20),
+					  ploc varchar(20),
+					  pid int);
+
+insert into product values(10,'immu','hyd',1),(11,'immu','hyd',2),(12,'immu','hyd',3),(13,'immu','hyd',6),(14,'immu','hyd',7);
+
+
+
+select * from employee;
+
+select * from product;
+
+--inner join
+
+select * from 
+employee inner join product
+on 
+employee.pid=product.pid;
+
+select e.eid,e.name,p.pname
+from 
+employee e inner join product p
+on e.pid=p.pid;
+
+select e.*,p.pname
+from 
+employee e inner join product p
+on e.pid=p.pid; 
+
+
+--left outer join
+-- matching data from both tables and also unmatched data from left table
+
+select e.*,
+	   p.*
+from employee e left outer join product p
+on e.pid=p.pid; 
+
+
+--right outer join
+-- matching data from both tables and also unmatched data from right table
+
+select e.*,
+	   p.*
+from employee e right outer join product p
+on e.pid=p.pid; 
+
+--full outer join
+--matching data from both tables and also unmatched data from left table and also unmatched data from right table
+
+select e.*,
+	   p.*
+from employee e full join product p
+on e.pid=p.pid;
+                       
