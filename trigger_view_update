@@ -1,0 +1,86 @@
+id n    g       did                did  dname
+1	imu	  male	  1                   1	  it
+2	imran	male	  2                   2   hr
+3	kr	  male	  3                   3   hw
+4	p	    female	1                   4   sw
+
+
+
+          1	imu	  male    it
+          2	imran	male	  hr
+          3	kr  	male	  hw
+          4	p	    female	it
+
+
+
+create table insted_tab_emp(id int, name varchar(10),gender varchar(12),deptid int)
+insert into insted_tab_emp values(1,'imu','male',1),(2,'imran','male',2),(3,'kr','male',3),(4,'p','female',1)
+create table insted_tab_dep(deptid int, deptname varchar(10))
+insert into insted_tab_dep values(1,'it'),(2,'hr'),(3,'hw'),(4,'sw')
+
+select *from insted_tab_emp
+select *from insted_tab_dep
+
+
+create view view_insted_tab_emp_dep
+as
+select 
+	id,name,gender,deptname
+from 
+	insted_tab_emp e join insted_tab_dep d
+on 
+	e.deptid=d.deptid
+
+select * from view_insted_tab_emp_dep
+
+insert into view_insted_tab_emp_dep values(5,'imran','male','hr')
+--View or function 'view_insted_tab_emp_dep' is not updatable because the modification affects multiple base tables.
+
+
+
+possible by using trigger
+
+create trigger tr_insted_tab_emp_dep
+on view_insted_tab_emp_dep
+instead of insert
+as
+begin
+select * from inserted
+select * from deleted
+end						
+insert into view_insted_tab_emp_dep values(5,'imran','male','hr') -->it show the date when i insert bt it is not effected to the view
+select * from view_insted_tab_emp_dep
+
+
+
+--> actual trigger which effects the original table
+
+create trigger tr_insted_tab_emp_dep_actual
+on view_insted_tab_emp_dep
+instead of insert
+as
+begin
+	
+	declare @deptid int
+
+	select @deptid=deptid
+	from insted_tab_dep d join inserted 
+	on	inserted.deptname=d.deptname
+	
+	if(@deptid is null)
+	begin
+		Raiserror('u entered wrong dept name,program gets terminated',16,1)
+		return
+	end
+
+	insert into insted_tab_emp(id,name,gender,deptid)
+	select id,name,gender,@deptid from inserted
+end	
+
+
+
+select * from view_insted_tab_emp_dep
+insert into view_insted_tab_emp_dep values(5,'imran','male','hr')
+
+select * from insted_tab_emp
+select * from insted_tab_dep
