@@ -1,0 +1,13 @@
+--> view limitations
+
+-->in views  we cant pass the argumemts
+-->we cant use globel tables for views
+
+create view v_clust
+@age int
+as
+select * from clustab where @age=age
+
+create view v_clustta
+as
+select * from ##tblglobel  --Views or functions are not allowed on temporary tables. Table names that begin with '#' denote temporary tables.
