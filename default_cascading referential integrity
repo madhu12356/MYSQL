@@ -1,0 +1,61 @@
+create table tblgender(id int, gender varchar(10))
+create table tblperson(id int, name varchar(10),email varchar(10),gid int)
+
+select * from tblgender
+select * from tblperson
+
+alter table tblgender alter column id int not null
+alter table tblgender add constraint cid primary key(id)
+
+alter table tblperson alter column id int not null
+alter table tblperson add constraint pid primary key(id)
+
+alter table tblperson add constraint fid foreign key (gid) references tblgender(id)
+
+insert into tblgender values(1,'male'),(2,'female'),(3,'unknown')
+insert into tblperson values(1,'immu','imu@a.com',1),
+							(2,'imu','imu@a.com',2),
+							(3,'umi','imu@a.com',1),
+							(4,'imran','imu@a.com',2),
+							(5,'soor','imu@a.com',null),
+							(6,'jan','imu@a.com',3)
+INSERT INTO tblgender VALUES(1,'MALE')
+
+ALTER TABLE tblperson add CONSTRAINT DEF_CONST DEFAULT 3 FOR GID
+INSERT INTO tblperson(id,name,email) VALUES(7,'SURI','S@S.COM')
+
+DELETE from tblgender WHERE ID=1 --The DELETE statement conflicted with the REFERENCE constraint "fid". The conflict occurred in database "sqldb", table "dbo.tblperson", column 'gid'.
+								 --The statement has been terminated.
+
+UPDATE tblperson SET gid=1 WHERE ID IN(1,3,6)
+
+select * from tblgender
+select * from tblperson
+
+
+if i set no action--> raises the error
+         set default --> id i delete any record the default will be injected 
+         set null--> null will be injected
+         cascade--> if i delect any recoed it will effected to the both tables
+
+
+
+--output for no action
+		
+		The DELETE statement conflicted with the REFERENCE constraint "fid". The conflict occurred in database "sqldb", table "dbo.tblperson", column 'gid'.
+The statement has been terminated.
+
+
+--output for default
+		
+	
+	
+--OUTPUT FOIR NULL
+1	immu	imu@a.com	2
+2	imu	imu@a.com	2
+3	umi	imu@a.com	2
+4	imran	imu@a.com	NULL
+5	soor	imu@a.com	NULL
+6	jan	imu@a.com	NULL
+7	SURI	S@S.COM		3
+	
