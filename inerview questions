@@ -1,0 +1,316 @@
+1.SQL---> SQL stands for the Structured Query Language.
+       -> SQL was initially invented in 1970
+       -> It is a database language used for database creation, deletion, fetching and modifying rows, etc.
+       -> sometimes, it is pronounced as 'sequel.'
+
+
+ 2. What are the usages of SQL?
+
+        To execute queries against a database
+        To retrieve data from a database
+        To inserts records in a database
+        To updates records in a database
+        To delete records from a database
+        To create new databases
+        To create new tables in a database
+        To create views in a database
+        To perform complex operations on the database.
+
+3. Does SQL support programming language features?
+
+        It is a common language that doesn't have a loop, conditional statements, and logical operations. \
+        It cannot be used for anything other than data manipulation. 
+        It is a command language to perform database operations. 
+        The purpose of SQL is to retrieve, manipulate, update, delete, and perform complex operations like joins on the data present in the database.
+
+ 4.What are the subsets of SQL?
+
+      Data definition language (DDL): It defines the data structure that consists of commands like CREATE, ALTER, DROP, TRUNCATE etc.
+
+      Data manipulation language (DML): It is used to manipulate existing data in the database. The commands in this category are SELECT, UPDATE, INSERT, etc.
+
+      Data control language (DCL): It controls access to the data stored in the database. The commands in this category include GRANT and REVOKE.
+
+      Transaction Control Language (TCL): It is used to deal with the transaction operations in the database. The commands in this category are COMMIT, ROLLBACK, SET TRANSACTION, SAVEPOINT, etc.
+
+
+ 5.What is the purpose of DDL Language?
+
+      DDL stands for Data definition language 
+      Defines structure of the database when the database is created
+      we can use the DDL commands to add, remove, or modify tables.
+      commands:CREATE, ALTER , TRUNCATE and DELETE 
+
+6.What is the purpose of DML Language?
+
+    Data manipulation language makes the user able to retrieve and manipulate data in a relational database.    
+    The DML commands can only perform read-only operations on data. 
+
+    We can perform the following operations using DDL language:
+
+        Insert data into the database through the INSERT command.
+        Update data in the database through the UPDATE command.
+        Delete data from the database through the DELETE command.
+
+
+7. What is the purpose of DCL Language?
+
+    Data control language allows users to control access and permission management to the database. 
+    It is the subset of a database, which decides that what part of the database should be accessed by which user at what point of time. 
+    It includes two commands, GRANT and REVOKE.
+
+GRANT: It enables system administrators to assign privileges and roles to the specific user accounts to perform specific tasks on the database.
+REVOKE: It enables system administrators to revoke privileges and roles from the user accounts so that they cannot use the previously assigned permission on the database.
+
+
+8.What is a primary key?
+
+      A primary key is a field that uniquely identify each record in the table
+      It is one of a special kind of unique key.
+      If the column contains a primary key
+          --no null values
+          --no duplicates
+          --only one pk
+          --we cant apply pk on nullable cols
+
+ 9.	What is a foreign key?
+
+      The foreign key is used to link one or more tables together. 
+      It is also known as the referencing key
+
+  10.What is a unique key?
+
+   column will be unique. It means a column cannot stores duplicate values. 
+         --only one null value
+         --no duplicates
+         --table allows multiple unique keys
+         --it can apply on nullable col
+
+  11.difference between a primary key and a unique key?
+
+         ---------------------------------------------------------------------------------------
+       |    primarykey                              |         unique key                         |
+       |--------------------------------------------|--------------------------------------------|
+       |    --no null values                        |   --only one null value                    |
+       |   --no duplicates                          |   --no duplicates                          |
+       |  --only one pk                             |   --table allows multiple unique keys      |
+       |  --we cant apply pk on nullable col        |   --it can apply on nullable col           |
+       -------------------------------------------------------------------------------------------
+
+
+
+         -----------------------------------------------------------------------------------------------------------------------------
+        |                   WHERE	                                 |                         HAVING                                   |
+        |-----------------------------------------------------------|-----------------------------------------------------------------| 
+        |   This clause is implemented in row operations.	     |      This clause is implemented in column operations.            |  
+        |                                                           |                                                                  |
+        |   It does not allow to work with aggregate functions.     |      It can work with aggregate functions.                       |
+        |                                                           |                                                                  |
+        |   This clause can be used with the SELECT, 	            |      This clause can only be used with the SELECT statement.     |
+        |  UPDATE, and DELETE statements.                           |                                                                  |
+         -------------------------------------------------------------------------------------------------------------------------------
+      
+
+
+ 12.What is RDBMS?
+
+      RDBMS stands for Relational Database Management System.
+      It is a database management system based on a relational model.
+      RDBMS stores the data into the collection of tables
+
+13.What is Normalization in a Database?
+
+      Normalization is used to minimize redundancy and dependency by organizing fields and table of a database.
+
+      There are some rules of database normalization, 
+
+                First normal form(1NF)
+                Second normal form(2NF)
+                Third normal form(3NF)
+                Boyce-Codd normal form(BCNF)
+
+     Using these steps, the redundancy, anomalies, inconsistency of the data in the database can be removed.
+
+
+FIRAT NORMAL FORM(1NF) :
+
+  if a relation contain composite or multi-valued attribute, it violates first normal form 
+  A relation is in first normal form if every attribute in that relation is singled valued attribute.
+
+ex:  --------------------------------------------------                             --------------------------------------------------
+    |     id          |  name         |    contact no   |                           |     id          |  name         |    contact no   | 
+     --------------------------------------------------                              --------------------------------------------------
+    |     1           |   immu        | 630180          |        -->1NF ------>     |     1           |   immu        | 630180          |  
+    |                 |               |  12345          |                           ---------------------------------------------------
+    ----------------------------------------------------                            |      1          |   IMMU        |  12345          |
+    |     2           |    ummi       |  654321         |                           ---------------------------------------------------- 
+     --------------------------------------------------                             |     2           |    ummi       |  654321         |    
+                                                                                     ------------------------------------------------- 
+
+
+
+
+SECOND NORMAL FORM(2NF)
+
+        A relation must be in first normal form 
+        Relation must not contain any partial dependency.
+
+                                              ------------------------------------------
+                                              | S_ID    |  COURSE_ID     | COURSE_FEE   |  
+                                              ------------------------------------------
+                                              |         |                |              |
+                                              |         |                |              |
+                                              |         |                |              |
+                                              |         |                |              |
+                                              -------------------------------------------
+                                                                    |
+                                                                    |
+                                                                    v
+                                                 -----------------------------------------
+                                                 |                                        |                
+                              ----------------------------                          -------------------------------    
+                              | S_ID    |  COURSE_ID     |                          | COURSE_ID  |    COURSE_FEE   |  
+                              ----------------------------                          --------------------------------
+                              |         |                |                          |
+                              |         |                |                          |
+                              |         |                |                          |
+                              |         |                |                          |
+                              ----------------------------                          -------------------------------
+
+
+THIRD NORMAL FPORM        
+        A relation is in third normal form, if there is no transitive dependency FOR NON PRIME ATTRIBUTES
+        It shud be in in second normal form.
+
+
+                                              -------------------------------------------------------------------
+                                              | S_ID    |  stud_name     | subject_ID   |    subject   |  address  |  
+                                              ---------------------------------------------------------------------
+                                              |         |                |              |               |           |
+                                              |         |                |              |               |           |
+                                              |         |                |              |               |           |
+                                              |         |                |              |               |           |
+                                              -----------------------------------------------------------------------
+                                                                                        |
+                                                                                        |
+                                                                                        v
+                                                   ------------------------------------------------------------------------
+                                                 |                                                                         |                
+                              --------------------------------------------------                          -------------------------------    
+                              | S_ID    |  stud_name     | subject_id   | address|                      | subject_ID     |    subject   |  
+                              ---------------------------------------------------                         ------------------------------
+                              |         |                |              |        |                       |               |              |
+                              |         |                |              |        |                       |               |              |
+                              |         |                |              |        |                       |               |              |
+                              |         |                |              |        |                       |               |              |
+                              ---------------------------------------------------                        -------------------------------
+
+ Boyce-Codd Normal Form (BCNF) 
+
+      A relation R is in BCNF if R is in Third Normal Form 
+      
+                                               ------------------------------------------
+                                              | S_ID    |  subject       | professor    |  
+                                              ------------------------------------------
+                                              |         |                |              |
+                                              |         |                |              |
+                                              |         |                |              |
+                                              |         |                |              |
+                                              -------------------------------------------
+                                                                    |
+                                                                    |
+                                                                    v
+                                                 -----------------------------------------
+                                                 |                                        |                
+                              ----------------------------                          -----------------------------------------------    
+                              | S_ID    |  professer_ID     |                       | professor_ID  |    subject    | proffesser   |  
+                              ----------------------------                          -----------------------------------------------
+                              |         |                |                          |
+                              |         |                |                          |
+                              |         |                |                          |
+                              |         |                |                          |
+                              ----------------------------                          ------------------------------------------------
+
+      
+      
+      
+      
+      14. index:
+               An index is a schema object
+                It is used by the server to speed up the retrieval of rows
+                
+                An index helps to speed up select queries and where clauses
+                but it slows down data input, with the update and the insert statements.
+                
+                Indexes can be created or dropped with no effect on the data
+              
+              
+        Syntax:
+
+               CREATE INDEX index
+               ON TABLE column;
+
+       For multiple columns:
+       Syntax:
+
+               CREATE INDEX index
+               ON TABLE (column1, column2,.....);
+
+ 15. Define a Relation Schema
+`      
+           Relation Schema is specified as a set of attributes. It is also known as table schema.
+
+
+16.  three levels of data abstraction:
+
+       Physical level : It is the lowest level of abstraction. 
+                        It describes how data are stored.
+
+       Logical level  : It is the next higher level of abstraction. 
+                        It describes what data are stored in the database and what the relationship among those data is.
+
+       View level     : It is the highest level of data abstraction. 
+                        It describes only part of the entire database.
+                        
+  17.There are two integrity rules in DBMS:
+
+              Entity Integrity       : It specifies that "Primary key cannot have a NULL value."
+
+              Referential Integrity : It specifies that "Foreign Key can be either a NULL value or should be the Primary Key value of other relation
+
+
+
+
+                 |------->A===AUTOMICITY      ------>The entair transaction takes place at once or doesn't happen at all
+                 |
+                 |------->C===CONSISTENCES    ------>the database must be consistent before and after transaction
+18. ACID-------->|
+                 |------->I===ISOLATION       ------>multiple transactions occur independently without interference
+                 |  
+                 |------->D===DURABILITY      ------->This property ensures that once the transaction has completed execution, the updates and modifications to the database are stored and they persist even if a system failure occurs
+
+                     ----------------------------------------------------------------------
+                    | Property     |	Responsibility for maintaining properties        |
+                     ----------------------------------------------------------------------
+                    | Atomicity	|       Transaction Manager                             |
+                    | Consistency	|      Application programmer                           |
+                    | Isolation	|      Concurrency Control Manager                      |
+                    | Durability	|      Recovery Manager                                 |
+                    --------------------------------------------------------------------------
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
