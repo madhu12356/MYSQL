@@ -1,0 +1,23 @@
+--rank
+		--row_number()
+		--rank()
+		--dense_rank()
+
+select ROW_NUMBER() over(order by cid desc) roll_num,* from students
+
+select dense_rank() over(order by cid desc) rank,* from students --it gives same value fr duplicate values
+
+select Rank() over(order by cid desc) roll_num,* from students --same as dense rank ( it consider logical order if 1 rank peoples hav 2 mem the 2 rank will be skip
+
+
+select *,ROW_NUMBER() over(order by cid desc) roll_num, 
+	   dense_rank() over(order by cid desc) rank,
+	   Rank() over(order by cid desc) roll_num from students
+
+
+--display the table who scored second rank
+select * from (
+	
+	select *,dense_rank() over(order by cid desc) rank from students)as temp_tab where rank=2; --we cant use alias name thats y use dup table 
+
+
