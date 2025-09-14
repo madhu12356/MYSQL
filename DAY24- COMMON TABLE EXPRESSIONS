@@ -1,0 +1,11 @@
+--CTE == COMMON TABLE EXPRESSIONS
+--	  ==  IT IS temporary result set, which can be used for recursive purpose
+--	  ==  
+
+select * from employee
+	
+ ;with cn 
+ as 
+ (select * from employee)
+ select * from cn
+ 
