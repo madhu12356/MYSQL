@@ -1,0 +1,9 @@
+--derived table
+-- here the table is not created, not inserted, and not deleted automatically it performs all operations while the query is running,,after running if we wantto access the dummytab we throws an exception
+select * from employee
+
+alter table employee add comm money 
+
+select * from (select eid,sal+isnull(comm,0) as total from  employee) as dummytab where total>25000 --where dummy table is a derived table
+
+select * from dummytab --Invalid object name 'dummytab'. bcaz it is temp table
