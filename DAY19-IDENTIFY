@@ -1,0 +1,32 @@
+--identity(statind val, increment)
+
+create table ident_tab(id int identity(1,1),
+						name varchar(10),
+						loc varchar(20))
+
+insert into ident_tab values('immu','hyd')
+
+select * from ident_tab
+
+insert into ident_tab values('ummi','hyd'),('soor','bnglor')
+
+dbcc checkident(ident_tab,reseed,10)
+
+insert into ident_tab values('kr','hyd')
+
+insert into ident_tab values('suri','hyd')
+
+--->delete  --> insert--> 13 or 11
+--->truncate --> insert--> 13 or 1
+
+delete from ident_tab
+
+insert into ident_tab values('immu','hyd')
+
+select * from ident_tab -->continue 13
+
+truncate table ident_tab
+
+insert into ident_tab values('immu','hyd')
+
+select * from ident_tab -->starts from 1
