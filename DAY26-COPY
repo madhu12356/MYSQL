@@ -1,0 +1,31 @@
+--copying table
+select * from employee
+ 
+select * from employee1 --Invalid object name 'employee1'.
+
+select * into employee1 from employee
+
+select * from employee1
+
+select eid,ename,sal  into employe2 from employee
+
+select * from employe2
+
+--copying whole structure(only structure not data)
+
+select * into emp3 from employee where 1=2  
+
+select * from emp3
+
+--copying req cols
+
+select eid,ename,sal into emp4 from employee where 1=2 
+
+select * from emp4
+
+--copying the data from old copied table to new copied table 
+insert into emp4 select * from employe2
+
+select * from emp4
+--copying req data from old tab to new data
+insert into emp4 select eid,ename, sal from employee
