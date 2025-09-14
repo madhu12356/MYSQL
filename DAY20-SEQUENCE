@@ -1,0 +1,69 @@
+--sequence--to generate an autoincrement num
+		-- WE SHOULD not pass the values in b/w in identity
+		--but we can pass in seq
+
+create sequence myseq
+start with 1
+increment by 1
+
+
+create table seq_tab(id int, name varchar(20),loc varchar(20))
+
+insert into seq_tab values(next value for myseq,
+							'immu',
+							'hyd')
+
+select * from seq_tab
+
+insert into seq_tab values(next value for myseq,'raj','bng')
+
+insert into seq_tab values(next value for myseq,'raju','ch')
+
+insert into seq_tab values(2,'rajuu','ch') 
+
+
+create sequence myseq1
+start with 11
+increment by 1
+minvalue 10
+maxvalue 15
+
+create table seq_tab1(id int, name varchar(20),loc varchar(20))
+
+
+insert into seq_tab1 values(next value for myseq1,'raj','bng')
+
+select * from seq_tab1
+
+create sequence myseq1
+start with 11
+increment by 1
+minvalue 10
+maxvalue 15
+
+
+insert into seq_tab1 values(next value for myseq1,'raj','bng')
+insert into seq_tab1 values(next value for myseq1,'raj','bng')
+insert into seq_tab1 values(next value for myseq1,'raj','bng')
+insert into seq_tab1 values(next value for myseq1,'raj','bng')
+insert into seq_tab1 values(next value for myseq1,'raj','bng') --The sequence object 'myseq1' has reached its minimum or maximum value. Restart the sequence object to allow new values to be generated.
+
+--cycle
+--cache
+create sequence myseq2
+start with 11
+increment by 1
+minvalue 10
+maxvalue 15
+cycle
+cache
+
+insert into seq_tab1 values(next value for myseq2,'raj','bng')
+insert into seq_tab1 values(next value for myseq2,'raj','bng')
+insert into seq_tab1 values(next value for myseq2,'raj','bng')
+insert into seq_tab1 values(next value for myseq2,'raj','bng')
+insert into seq_tab1 values(next value for myseq2,'raj','bng') --The sequence object 'myseq1' has reached its minimum or maximum value. Restart the sequence object to allow new values to be generated.
+insert into seq_tab1 values(next value for myseq2,'raj','bng')
+insert into seq_tab1 values(next value for myseq2,'raj','bng')
+
+select * from seq_tab1
