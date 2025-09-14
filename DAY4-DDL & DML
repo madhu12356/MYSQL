@@ -1,0 +1,71 @@
+--create  database
+create database sqldb;
+--using db
+use sqldb;
+
+--DDL ---> CRETATE, ALTER ,DROP ,TRUNCATE
+--create table
+create table student(sid int,sname varchar(20));
+
+--printing the table
+select * from student;
+
+--alter
+--add col
+alter table student add salary money
+
+--add col
+alter table student add location varchar(20)
+
+--delete col
+alter table student drop column salary
+
+--changing the data type
+alter table student alter column sname char(10);
+
+--change the size of data type
+alter table student alter column sname char(100);
+
+--DML ---> INSERT, DELETE, UPDATE
+
+--using multiple inserts for multiple rows
+insert into student values(1,'immu','bnglor');
+insert into student values(2,'ummi','atp');
+
+--using single insert for multiple rows
+insert into student values(3,'kr','hdpur'),(4,'maha','hyd'),(5,'bhar','hdpur'),(6,'doo','hyd');
+
+select * from student;
+
+--passing required cols
+insert into student(sid,sname) values(7,'soor')
+
+insert into student(sid, location) values(8,'usa')
+
+
+--union all
+insert into student
+select 9,'nani','pune'
+union all
+select 10,'nan','pune'
+
+
+--update
+
+update student set location='pune' where sid=7;
+
+select * from student;
+
+
+--delete
+delete from student where sid=10;
+
+delete from student where sid in (7,8,9);
+
+
+--drop and truncate
+ --truncate
+ truncate table student
+
+ --drop
+ drop table student
