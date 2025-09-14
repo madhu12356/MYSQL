@@ -1,0 +1,57 @@
+Data Integrity is used to maintain accuracy and consistency of data in a table.
+
+
+
+1]null
+2]not null
+3]primary key--> The PRIMARY KEY constraint uniquely identifies each record in a table.
+             
+        -->No null values
+        -->no duplicates
+        -->A table can have only ONE primary key; 
+        -->we can't create a pk for nullable values
+   
+        
+4]unique key-->The UNIQUE constraint ensures that all values in a column are different.
+
+        -->only one null value
+        -->no duplicates
+        -->multiple unique keys per table
+        -->we can create unique key fr nullable values
+        
+5]check-->The CHECK constraint is used to limit the value range that can be placed in a column.
+
+          example --> create table stud(id int, 
+                                         name varchar(20), 
+                                         sal int check (sal=20000) 
+                                         );
+            
+                      insert into stude (1,'immu',100)  --->throws an eception that sal must be 20000 
+                
+6]default -->The DEFAULT constraint is used to set a default value for a column.
+
+         example --> create table stud(id int, 
+                                       name varchar(20), 
+                                       sal int check (sal=20000),
+                                       loc varchar(20) default 'hyd' 
+                                       );
+                                       
+    7] forigen key  -->A FOREIGN KEY is a field (or collection of fields) in one table, that refers to the PRIMARY KEY in another table.
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+         
+        
