@@ -1,0 +1,101 @@
+--sub querys == is a query within another query
+
+create table student(student_id int,
+		     student_name varchar(20), 
+		     tudent_location varchar(20),
+		     cid int);
+
+insert into student values(1,'immu','atp',10),
+                           (2,'ummi','atp',10),
+                           (3,'soou','atp',11),
+                           (4,'abc','atp',12),
+                           (5,'xyz','atp',13);
+
+select * from student
+
+create table course(crouse_id int,
+		    course_name varchar(20), 
+		    course_fee int,
+		    pid int);
+
+insert into course values(10,'sql',1000,100),
+                          (11,'sql',1000,101),
+                          (12,'python',1100,102),
+                          (13,'java',1200,103),
+                          (14,'c',1300,104);
+
+select * from student
+select * from course
+
+delete from course where crouse_id=11
+
+--dispaly student name who joined sql server
+
+	select student_name from student where cid in			--immu ummi
+			
+		(select crouse_id from course where course_name='sql')  -- 10 11
+
+
+--display the student name who spend mor then 1200 as course fee
+
+	select student_name from student where cid in                  --12=1bc 13=xyz 14=no
+	
+		(select crouse_id from course where course_fee>=1100)   --12 13 14
+
+
+create table products(pid int,
+		      pname varchar(20),
+		      pcost int,
+		      mid int);
+
+insert into products values(100,'laptop',45000,1001),
+			   (101,'mouse',500,1002),
+			   (102,'keyboard',48000,1003),
+			   (103,'wirelesskeyboard',55000,1004),
+			   (104,'desktop',46000,1005)
+select * from student
+select * from course
+select * from products
+
+--display stud name who bought laptops
+
+	select student_name from student where cid in(						--10=immu ummi 15=na
+	
+		select crouse_id from course where pid = (					--10 15
+		
+				select pid from products where pname='laptop') )	 	--100		
+
+
+
+--display stud names and loc who spend mor thn 45k to buy a product 
+
+	select student_name, student_location from student where cid in ( 			--10=immu ummi , 15=na, 12=abc , 13=xyx, 14=na
+		
+         	select crouse_id from course where pid in (			        	--10 15 12 13 14
+		
+			select pid from products where pcost>=45000));     			--100 102 103 104
+
+
+create table mobile(mid int,
+		    brand varchar(20),
+		    mcost money)
+
+insert into mobile values(1001,'realme',28000),
+			 (1002,'iqoo',30000),
+			 (1003,'vivo',23000),
+			 (1004,'redme',25000)
+
+select * from student
+select * from course
+select * from products
+select * from mobile
+
+--display stud name who is having real me
+
+	select student_name from student where cid in (						   --10=immu ummi 15=no
+		
+		select crouse_id from course where pid =(					   --10 15
+		
+			select pid from products where mid =(                      		   --100
+	
+					select mid from mobile where brand='realme') ) )  	   --1001
