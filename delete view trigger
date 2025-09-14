@@ -1,0 +1,27 @@
+----
+
+create view view_delete_insted_tab_dept_emp
+as
+select id,name,gender,deptname
+from insted_tab_emp e join insted_tab_dep d
+on e.deptid=d.deptid
+
+select * from view_delete_insted_tab_dept_emp
+
+delete from view_delete_insted_tab_dept_emp where id =4 --View or function 'view_delete_insted_tab_dept_emp' is not updatable because the modification affects multiple base tables.
+
+
+create trigger tr_View_delete_insted_tab_dept_emp
+on view_delete_insted_tab_dept_emp
+instead of delete
+as
+begin
+	delete insted_tab_emp from insted_tab_emp
+	join deleted on insted_tab_emp.id=deleted.id	
+end
+
+select * from view_delete_insted_tab_dept_emp
+
+delete from view_delete_insted_tab_dept_emp where id =4 
+select * from insted_tab_emp
+select * from insted_tab_dep
