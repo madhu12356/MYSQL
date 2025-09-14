@@ -1,0 +1,41 @@
+--conversion function
+		
+		-->cast()
+		-->convert()
+
+select 'immu'+'imran'
+
+select 'immu'+10
+
+select 'immu'+'10'
+
+select 'immu'+cast(100 as varchar(100))
+
+select 'immu'+convert(varchar(10),100)
+
+select 10+20
+
+select * from date_tab
+
+select dob from date_tab
+
+select convert(varchar(20),dob) from date_tab
+
+select convert(varchar(20),dob,101) from date_tab  --mm/dd/yy
+
+select convert(varchar(20),dob,102) from date_tab  --yy.mm.dd
+
+select convert(varchar(20),dob,103) from date_tab   --dd/mm/yy
+
+select convert(varchar(20),dob,104) from date_tab	--dd.mm.yy
+
+select convert(varchar(20),dob,105) from date_tab   --dd-mm-yy
+
+select convert(varchar(20),dob,106) from date_tab   --dd month name(nov) yy
+
+select convert(varchar(20),dob,107) from date_tab	--nov 19,2000
+
+select convert(varchar(20),dob,108) from date_tab	
+
+
+select convert(varchar(20),dob,114) from date_tab   --upto 114 
