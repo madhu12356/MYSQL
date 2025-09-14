@@ -1,0 +1,57 @@
+select * from date_tab
+
+select GETDATE()
+
+select YEAR(getdate())
+
+select name,year(dob) from date_tab
+
+select MONTH(getdate())
+
+select name,month(dob) from date_tab
+
+select day(getdate())
+
+select name,day(dob) from date_tab
+
+select name,year(dob) as year,
+			month(dob) as month,
+			day(dob) as day  from date_tab
+
+--datepart() --to fetch any part of date
+select DATEPART(yy,getdate())
+
+select name,DATEPART(yy,dob) year from date_tab
+select name,DATEPART(mm,dob) month from date_tab
+select name,DATEPART(dd,dob) day from date_tab --day
+select name,DATEPART(hh,dob) hours from date_tab --hours
+
+select DATEPART(mm,getdate())
+select DATEPART(dd,getdate())
+select DATEPART(hh,getdate())
+select DATEPART(MINUTE,getdate())
+select DATEPART(SECOND,getdate())
+select DATEPART(MILLISECOND,getdate())
+
+
+
+
+select DATENAME(dw,getdate())  --day of week  --monday
+select DATENAME(mm,getdate())  --mongth name --oct
+
+select name,DATEname(dw,dob) dayofweek from date_tab
+select name,DATEname(mm,dob) dayofmonth from date_tab
+
+--				datepart, start date, end date
+select DATEDIFF(yy,'11-19-2000',getdate()) --mm/dd/year year differences
+select DATEDIFF(mm,'11-19-2000',getdate()) --mm/dd/year months diff
+
+select name,DATEdiff(yy,dob,getdate()) age from date_tab
+
+select DATEADD(dd,5,getdate())
+
+select name,DATEadd(yy,5,dob) age from date_tab --ading 5 years
+
+select EOMONTH(getdate()) --end of month
+
+select DATENAME(dw,EOMONTH(getdate())) 
