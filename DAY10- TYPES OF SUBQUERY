@@ -1,0 +1,66 @@
+sub query==query within another query
+                            
+   
+      
+      
+      
+      
+      
+/*
+--sub query
+
+		--> normal query
+		        1> single value sub query
+			2> multi-value subquery
+		-->corelated sub query ----------->parent query will be executed 1st and inner quer will be executed
+
+*/
+
+create table students(sid int,
+		      sname varchar(20),
+		      loc varchar(20),
+		      scalarship money,
+		      cid int)
+
+insert into students values(1,'immu','atp',10000,10),
+			    (2,'ummi','hyd',25000,10),
+			    (3,'su','atp',20000,11),
+			    (4,'jaga','balary',30000,12),
+			    (5,'k','hdp',23000,13)
+
+select * from students
+					
+select * from course  
+
+--single value sun query
+
+	--display stud name who joined java
+
+                select sname from students where cid =(						--13=k
+		
+		                    select crouse_id from course where course_name='java' )     --13
+
+
+--multi value sub query
+
+	   --display stud names who joined who spend moe than 12000
+
+	              select sname from students where cid in (				    --whenever we get multiple values from subquery we need IN operator
+		
+		                    select crouse_id from course where course_fee>=1200)    --13 14 
+		
+
+	    --display stud name who joined java and sql
+
+	               select sname from students where cid in (
+	
+		                    select crouse_id from course where course_name in('java','sql') )
+
+
+--co-related sub query
+
+      --display stud name who is tacking second highest scalarship
+
+select * from students
+					
+        select sname from students s1 where 2=(select COUNT(*) from students s2 where s1.scalarship<=s2.scalarship) 
