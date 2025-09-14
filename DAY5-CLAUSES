@@ -1,0 +1,58 @@
+1] from
+2]where
+3]group by
+4]having 
+5]order by
+6]distinct
+7]top
+
+
+create table employee(eid int,ename varchar(20),job varchar(20),sal int,dno int);
+
+select * from employee
+						   		
+--from
+select eid,ename from employee
+
+--where
+select * from employee where eid>5;
+
+select * from employee where dno in (100,101,102) ;
+
+select eid,ename,sal+1000 as hike from employee where sal+1000>25000; --we cant use alias name
+
+select * from (select eid,ename,sal+1000 as hike from employee) as dummpyemp  where hike>30000;
+
+--group by
+
+select job,sum(sal) as sumofsal from employee group by job;
+
+select job,count(*) as countofsal from employee group by job;
+
+select job,max(sal) as maxofsal from employee group by job;
+
+--having
+select job,sum(sal) as sumofsal from employee group by job having sum(sal)>30000;
+
+select job,count(*) as countofsal from employee group by job having count(*)>1;
+
+select job,max(sal) as maxofsal from employee group by job having max(sal)>30000;
+
+--orderby
+select * from employee order by sal;
+
+select * from employee order by 4;
+
+select job,max(sal) as maxofsal from employee group by job order by 2;
+
+select job,max(sal) as maxofsal from employee group by job order by maxofsal; --we can give alias names in order by
+
+--distinct
+
+select distinct * from employee
+
+select distinct job from employee
+
+--top
+
+select top 5 * from employee
