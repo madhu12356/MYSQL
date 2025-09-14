@@ -1,0 +1,65 @@
+data = collection of raw data (no Meaning)
+  |
+  information = processed data (complt meaning)
+  
+ex:  this imran is --> data
+     this is imran -->information
+     
+            
+    data     [           ]    info
+  ---------> | computer  | ----------->
+    i/p      [           ]    0/p
+    
+  DBMD: which allows user to access the database
+  
+  
+      
+    
+  |           |       |  Mysql
+  |   data    |  -----|------------> O.user
+  |___________|       |
+     database         |
+                     DBMS
+                     
+                     
+ files---->FMS -> File Management system
+ DBMS----->|
+           |->NDBMS
+           |->HDBMS
+           |->DDBMS
+           |->RDBMS-->|(relational DBMS)
+                      |->ORACLE
+                      |->mIECROSOFT SQL SERVER
+                      |->MYSQL
+                      
+                      
+ sql-->Structured query language
+    -->is a  language
+    -->mainly used to communicate b/W user & system(DB)
+    
+ SQL--> DDL     ---> DATA DEFINATUON LANGUAGE
+        DML     ---> DATA   MANIPULATION LANG
+        DRL\DQL ---> DATA RETRIVAL LANG \ QUERY
+        DCL     ---> DATA CONTROL LANG
+        TCL     ---> TRANSACTIONAL CONTROL LANG
+        
+        
+ DDL--> CREATE           [Dr.cAT]
+        ALTER
+        DROP
+        TRUNCATE
+        
+ DML--> INSERT           [UID]
+        UPDATE
+        DELETE
+        
+ DRL--> SELECT
+ 
+ DCL--> GRANT
+        REVOKE
+        
+ TCL--> COMMIT
+        ROLLBACK
+        SACE POINT
+   
+   
