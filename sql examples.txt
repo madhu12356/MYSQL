@@ -1,0 +1,1575 @@
+DDL 			50	---> CRETATE, ALTER ,DROP ,TRUNCATE
+DML			80	---> INSERT, DELETE, UPDATE
+clauses 		125	---> from where groupby having orderby distinct top
+constrains 		188	---> null notnull primary key unique check default  foreign key
+joins	 		414	---> inner join outerjoin (left right full) cross join full join
+subquery 		500	--->
+string functions 	655
+date functions 	 	761	--->datepart datediff
+conversions 		832	---> cast() convert
+null functions  	876	---> isnull() coalesce()
+logical nunctions 	915	---> iif choose
+rank 			936	---> row_number() rank() dense_rank()
+merge			960
+identity		1013
+sequence		1051
+synonym			1124
+pagination		1137
+derived table 		1159
+temp table 		1172	---> local global
+cte 			1218	---> common table expressiopn
+oprators		1232
+copying table		1333 
+view 			1368	---> encryption schemabinding check option
+types of columns 	1523	--->identity column , normal column , computed column 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--create  database
+create database sqldb;
+--using db
+use sqldb;
+
+--DDL ---> CRETATE, ALTER ,DROP ,TRUNCATE
+
+--create table
+create table student(sid int,
+		    sname varchar(20));
+
+--printing the table
+select * from student;
+
+--alter
+--add col
+alter table student add salary money
+
+--add col
+alter table student add location varchar(20)
+
+--delete col
+alter table student drop column salary
+
+--changing the data type
+alter table student alter column sname char(10);
+
+--change the size of data type
+alter table student alter column sname char(100);
+
+--DML ---> INSERT, DELETE, UPDATE
+
+--using multiple inserts for multiple rows
+insert into student values(1,'immu','bnglor');
+insert into student values(2,'ummi','atp');
+
+--using single insert for multiple rows
+insert into student values(3,'kr','hdpur'),(4,'maha','hyd'),(5,'bhar','hdpur'),(6,'doo','hyd');
+
+select * from student;
+
+--passing required cols
+insert into student(sid,sname) values(7,'soor')
+
+insert into student(sid, location) values(8,'usa')
+
+
+--union all
+insert into student
+select 9,'nani','pune'
+union all
+select 10,'nan','pune'
+
+
+--update
+
+update student set location='pune' where sid=7;
+
+select * from student;
+
+
+--delete
+delete from student where sid=10;
+
+delete from student where sid in (7,8,9);
+
+
+--drop and truncate
+ --truncate
+ truncate table student
+
+ --drop
+ drop table student
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+clauses
+
+ create table employee(eid int,ename varchar(20),job varchar(20),sal int,dno int);
+
+ insert into employee values(1,'kr','sys',20000,100),
+						   (2,'immu','pro',26000,101),
+						   (3,'soor','ass',29000,102),
+						   (4,'ummi','hr',30000,103),
+						   (5,'krish','tr',45000,104),
+						   (6,'maha','sys',28000,105),
+						   (7,'mahi','pro',29000,106),
+						   (8,'poo','ass',40000,107)
+
+select * from employee
+						   		
+--from
+select eid,ename from employee
+
+--where
+select * from employee where eid>5;
+
+select * from employee where dno in (100,101,102) ;
+
+select eid,ename,sal+1000 as hike from employee where sal+1000>25000; --we cant use alias name
+
+select * from (select eid,ename,sal+1000 as hike from employee) as dummpyemp  where hike>30000;
+
+--group by
+
+select job,sum(sal) as sumofsal from employee group by job;
+
+select job,count(*) as countofsal from employee group by job;
+
+select job,max(sal) as maxofsal from employee group by job;
+
+--having
+select job,sum(sal) as sumofsal from employee group by job having sum(sal)>30000;
+
+select job,count(*) as countofsal from employee group by job having count(*)>1;
+
+select job,max(sal) as maxofsal from employee group by job having max(sal)>30000;
+
+--orderby
+select * from employee order by sal;
+
+select * from employee order by 4;
+
+select job,max(sal) as maxofsal from employee group by job order by 2;
+
+select job,max(sal) as maxofsal from employee group by job order by maxofsal; --we can give alias names in order by
+
+--distinct
+
+select distinct * from employee
+
+select distinct job from employee
+
+--top
+
+select top 5 * from employee
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+--constrains
+---null
+
+create table null_tab(id int,
+					  name varchar(20) null,
+					  sal int);
+
+insert into null_tab values(1,null,10000);
+
+insert into null_tab values(null,null,null);
+
+select * from null_tab
+
+--not null ---. it wonts null values
+
+--while creating a table here I'm giving not noll to the int col
+create table nn_tab(it int not null,
+					name varchar(10),
+					sal int);
+
+insert into nn_tab values(1,null,10000);
+
+insert into nn_tab values(null,null,10000); --Cannot insert the value NULL into column 'it', table 'master.dbo.nn_tab'; column does not allow nulls. INSERT fails.
+
+insert into nn_tab values(1,null,10000); -- it allows duplicates bt it doesnot allow only null vaalues
+
+select * from nn_tab
+
+--after creating a table here I'm making not null to the id col
+create table nn_tab1(id int,
+					 name varchar(10),
+					 sal int);
+
+alter table nn_tab1 alter column id int not null; 
+
+select * from nn_tab1
+
+insert into nn_tab1 values(1,null,10000);
+
+insert into nn_tab1 values(null,null,10000); --Cannot insert the value NULL into column 'id', table 'master.dbo.nn_tab1'; column does not allow nulls. INSERT fails.
+
+
+--primary key
+	--no null values
+	--no duplicates
+	--only one pk
+	--we cant apply pk on nullable cols
+
+--while creating a table
+create table pk_tab(id int primary key,
+					name varchar(10),
+					sal int);
+
+insert into pk_tab values(1,null,10000);
+
+insert into pk_tab values(null,null,10000); --Cannot insert the value NULL into column 'id', table 'master.dbo.pk_tab'; column does not allow nulls. INSERT fails.
+
+insert into pk_tab values(1,null,10000); --Violation of PRIMARY KEY constraint 'PK__pk_tab__3213E83F85AB919F'. Cannot insert duplicate key in object 'dbo.pk_tab'. The duplicate key value is (1).
+
+create table pk2_tab(id int primary key,
+					name varchar(10) primary key,
+					sal int)						--Cannot add multiple PRIMARY KEY constraints to table 'pk2_tab'.
+
+
+--after creating table
+
+create table pk_tab1(id int,
+					name varchar(10) ,
+					sal int)
+
+alter table pk_tab1 add primary key(id); --Cannot define PRIMARY KEY constraint on nullable column in table 'pk_tab1'
+
+alter table pk_tab1 alter column id int not null;
+
+alter table pk_tab1 add primary key(id);
+
+insert into pk_tab1 values(1,null,100000) 
+
+insert into pk_tab1 values(1,null,100000) -- Cannot insert duplicate key in object 'dbo.pk_tab1'.
+
+
+--unique
+	--only one null value
+	--no duplicates
+	--table allows multiple unique keys
+	--it can apply on nullable col
+
+--while creating table
+create table uk_tab(id int unique,
+					name varchar(10),
+					loc varchar(20))
+	
+insert into uk_tab values(1,null,'mysour');
+
+insert into uk_tab values(1,null,'mysour'); -- Cannot insert duplicate key in object 'dbo.uk_tab'. The duplicate key value is (1)
+
+insert into uk_tab values(null,null,'mysour')
+
+insert into uk_tab values(null,null,'mysour')-- Cannot insert duplicate key in object 'dbo.uk_tab'. The duplicate key value is (<NULL>).
+
+
+select * from uk_tab
+
+create table uk_tab1(id int unique,
+					 name varchar(10),
+					 did int unique);
+
+--after creating table
+create table uk_tab_after(id int, 
+						  name varchar(10))
+
+alter table uk_tab_after add unique(id);
+
+
+--check
+	--it checks the condition if cond is true thn insert the values else it throws error
+
+--while creating table
+create table ck_tab(id int,
+					name varchar(10),
+					sal money check(sal<=20000));
+
+insert into ck_tab values (1,null,10000);
+
+insert into ck_tab values (2,null,21000); --The INSERT statement conflicted with the CHECK constraint "CK__ck_tab__sal__1C1D2798"
+
+select * from ck_tab
+
+--after creating table
+
+create table ck_tab1(id int,
+					 name varchar(10),
+					 sal money);
+
+alter table ck_tab1 add check(sal<=20000)
+
+insert into ck_tab1 values (1,null,10000);
+
+insert into ck_tab1 values (2,null,21000); --The INSERT statement conflicted with the CHECK constraint "CK__ck_tab1__sal__1E05700A".
+
+--default
+
+--while creating table
+
+create table def_tab(id int ,
+					 name varchar(10),
+					 loc varchar(10) default 'hyd');
+
+insert into def_tab values(1,null) --Column name or number of supplied values does not match table definition. bcaz table need exact values as much as having in table
+
+insert into def_tab(id,name) values(1,null)
+
+select * from def_tab
+
+insert into def_tab values(2,'immu','bnglor') --it will return bnglor (overriden)
+
+
+--after creating table
+
+create table def_tab1(id int,
+					  name varchar(10),
+					  loc varchar(20))
+
+alter table def_tab1 add default 'hyd' for loc;
+
+insert into def_tab1 values(1,null) --Column name or number of supplied values does not match table definition.
+
+insert into def_tab1(id,name) values(1,null)
+
+select * from def_tab1
+
+insert into def_tab1 values(2,'immu','bnglor')
+
+
+---foreign key
+
+create table emp(eid int primary key,
+				 name varchar(20));
+
+insert into emp values(1,'immu'),(2,'ummi'),(3,'soor'),(4,'kr');
+
+select * from emp
+
+
+
+--while creating table 
+create table prod(pid int,
+				  pname varchar(10),
+				  eid int foreign key references emp(eid));
+
+insert into prod values(100,'lap',2);
+
+insert into prod values(101,'lap-top',2);
+
+select * from prod 
+
+select * from emp
+
+insert into prod values(103,'phn',5); --The INSERT statement conflicted with the FOREIGN KEY constraint "FK__prod__eid__25A691D2". The conflict occurred in database "master", table "dbo.emp", column 'eid'.
+
+insert into prod values(104,'real',null); --null will be allowed
+
+--after creating the table
+
+create table prod1(pid int,
+				   pname varchar(20),
+				   eid int);
+
+alter table prod1 add foreign key(eid) references emp(eid);
+
+insert into prod1 values(100,'lap',2);
+
+insert into prod1 values(101,'lap-top',2);
+
+select * from prod1 
+
+select * from emp
+
+insert into prod1 values(103,'phn',5); --The INSERT statement conflicted with the FOREIGN KEY constraint "FK__prod__eid__25A691D2". The conflict occurred in database "master", table "dbo.emp", column 'eid'.
+
+insert into prod1 values(104,'real',null); --null will be allowed
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+/*
+JOINS
+		INNER JOIN
+		OUTER JOIN  -->LEFT
+					   RIGHT
+					   FULL
+		CROSS JOIN
+		SELF JOIN
+*/
+
+--INNER JOIN --matching data from all the tables
+
+create table employee(eid int,
+					  name varchar(20),
+					  loc varchar(20));
+
+alter table employee add pid int 
+
+
+insert into employee values(100,'immu','hyd',1);
+
+insert into employee values(101,'immu','hyd',2),(102,'immu','hyd',3),(103,'immu','hyd',4),(104,'immu','hyd',5);
+
+select * from employee;
+
+
+
+create table product(proid int,
+					  pname varchar(20),
+					  ploc varchar(20),
+					  pid int);
+
+insert into product values(10,'immu','hyd',1),(11,'immu','hyd',2),(12,'immu','hyd',3),(13,'immu','hyd',6),(14,'immu','hyd',7);
+
+
+
+select * from employee;
+
+select * from product;
+
+--inner join
+
+select *
+from employee inner join product
+on employee.pid=product.pid;
+
+select e.eid,
+	   e.name,
+	   p.pname
+from employee e inner join product p
+on e.pid=p.pid;
+
+select e.*,
+	   p.pname
+from employee e inner join product p
+on e.pid=p.pid; 
+
+
+--left outer join
+-- matching data from both tables and also unmatched data from left table
+
+select e.*,
+	   p.*
+from employee e left outer join product p
+on e.pid=p.pid; 
+
+
+--right outer join
+-- matching data from both tables and also unmatched data from right table
+
+select e.*,
+	   p.*
+from employee e right outer join product p
+on e.pid=p.pid; 
+
+--full outer join
+--matching data from both tables and also unmatched data from left table and also unmatched data from right table
+
+select e.*,
+	   p.*
+from employee e full join product p
+on e.pid=p.pid;
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+--sub querys
+create table student(student_id int,
+					 student_name varchar(20), 
+					 student_location varchar(20),
+					 cid int);
+
+insert into student values(1,'immu','atp',10),(2,'ummi','atp',10),(3,'soou','atp',11),(4,'abc','atp',12),(5,'xyz','atp',13);
+
+select * from student
+
+create table course(crouse_id int,
+					 course_name varchar(20), 
+					 course_fee int,
+					 pid int);
+
+insert into course values(10,'sql',1000,100),(11,'sql',1000,101),(12,'python',1100,102),(13,'java',1200,103),(14,'c',1300,104);
+
+select * from student
+select * from course
+
+delete from course where crouse_id=11
+
+truncate table course
+
+--dispaly student name who joined sql server
+
+select student_name from student where cid in					--immu ummi
+			
+			(select crouse_id from course where course_name='sql') -- 10 11
+
+
+--display the student name who spend mor then 1200 as course fee
+
+select student_name from student where cid in                       --12=1bc 13=xyz 14=no
+	
+			(select crouse_id from course where course_fee>=1100)   --12 13 14
+
+
+create table products(pid int,
+					  pname varchar(20),
+					  pcost int,
+					  mid int);
+
+insert into products values(100,'laptop',45000,1001),
+						    (101,'mouse',500,1002),
+							(102,'keyboard',48000,1003),
+							(103,'wirelesskeyboard',55000,1004),
+							(104,'desktop',46000,1005)
+select * from student
+select * from course
+select * from products
+
+--display stud name who bought laptops
+
+select student_name from student where cid in(						--10=immu ummi 15=na
+	
+		select crouse_id from course where pid = (					--10 15
+		
+				select pid from products where pname='laptop') )	 --100		
+
+
+
+--display stud names and loc who spend mor thn 45k to buy a product 
+
+select student_name, student_location from student where cid in ( --10=immu ummi , 15=na, 12=abc , 13=xyx, 14=na
+		
+		select crouse_id from course where pid in (				  --10 15 12 13 14
+		
+				select pid from products where pcost>=45000));    --100 102 103 104
+
+
+create table mobile(mid int,
+					brand varchar(20),
+					mcost money)
+
+insert into mobile values(1001,'realme',28000),(1002,'iqoo',30000),(1003,'vivo',23000),(1004,'redme',25000)
+
+select * from student
+select * from course
+select * from products
+select * from mobile
+
+--display stud name who is having real me
+
+select student_name from student where cid in (						   --10=immu ummi 15=no
+		
+		select crouse_id from course where pid =(					   --10 15
+		
+			select pid from products where mid =(                      --100
+	
+					select mid from mobile where brand='realme') ) )   --1001
+
+
+/*
+--sub query
+
+		--> normal query
+		        1> single value sub query
+				2> multi-value subquery
+		-->corelated sub query
+
+*/
+
+create table students(sid int,
+					  sname varchar(20),
+					  loc varchar(20),
+					  scalarship money,
+					  cid int)
+
+insert into students values(1,'immu','atp',10000,10),
+						   (2,'ummi','hyd',25000,10),
+						   (3,'su','atp',20000,11),
+						   (4,'jaga','balary',30000,12),
+						   (5,'k','hdp',23000,13)
+
+select * from students
+					
+select * from course
+
+--single value sun query
+
+		--display stud name who joined java
+
+select sname from students where cid =(							  --13=k
+		
+		select crouse_id from course where course_name='java' )    --13
+
+
+--multi value sub query
+
+	--display stud names who joined who spend moe than 12000
+
+	select sname from students where cid in (						--whenever we get multiple values from subquery we need IN operator
+		
+		select crouse_id from course where course_fee>=1200)    --13 14 
+		
+
+	--display stud name who joined java and sql
+
+	select sname from students where cid in (
+	
+		select crouse_id from course where course_name in('java','sql') )
+
+
+--co-related sub query
+
+	--display stud name who is tacking second highest scalarship
+
+select * from students
+					
+select sname from students s1 where 2=(select COUNT(*) from students s2 where s1.scalarship<=s2.scalarship) 
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+/*
+string functions 
+	
+	1.len()
+	2.left()
+	3.right()
+	4.lower()
+	5.upper()
+	6.lower()
+	7.reverse()
+	8.replicate()
+	9.space()
+	10.charindex()
+	11.substring()
+	12.replace()
+	13.stuff()
+*/
+
+--len(str) --to find the length of given string
+
+select LEN('immu') as length
+ 
+select * from students
+
+select sname, len(sname) as name_len from students 
+  
+
+--lower(str) --to display str in lower case
+
+select lower('IMMU')
+
+select sname, lOWER(sname) as LOWERCASE from students 
+
+--upper case --to display str in upper case
+
+
+select upper('IMMU')
+
+select upper('IMmu')
+
+select sname, upper(sname) as upperCASE from students 
+
+--left(str,n) --fetches left side n no of char frm given str
+
+select left('IMMU',2)
+
+select sname, left(sname,2) as leftside from students 
+
+
+--right(str,n) --fetches right side n no of char frm given str
+
+select right('IMMU',2)
+
+select sname, right(sname,2) as rightside from students 
+
+--reverse(str)
+
+select REVERSE('immu')
+
+select sname, reverse(sname) as reverse from students 
+
+--replicate(str,n) --repeates the given string n no of times
+
+select REPLICATE('immu',2);
+
+select REPLICATE('immu ',2);
+
+select sname, replicate(sname,2) as repeats from students 
+
+--space(number)
+
+select space(2)
+
+select REPLICATE('immu'+SPACE(2),2);
+
+select sname, replicate(sname+SPACE(3),2) as repeats from students 
+
+--charindex()--to find index position of a particular char
+			 --matching 
+			 --counting
+select CHARINDEX('a','we are indians') --4
+
+select CHARINDEX('a','we are indians',5) --12
+
+--sub string (str,start index ,len of sub str) -- to take a part of a syr frm main ster
+
+select SUBSTRING('imranimmu',6,4)
+
+--replace() -- to replace any part of main str woth new str
+
+
+select REPLACE('immu','i','u')
+
+select REPLACE('immu','m','u')
+
+select REPLACE('immu','mm','u')
+
+select REPLACE('imran shaik imran','imran','immu') --replace all occurences
+
+--stuff(str, index , len of str,replace str)--replaces only req occurences
+
+select stuff('imran shaik imran',1,5,'immu') 
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+date functions
+
+create table date_tab(id int, name varchar(10), dob date)
+
+insert into date_tab values(1,'immu','11-19-2000'),
+						   (2,'ummi','11-19-1999'),
+						   (3,'soor','11-19-1998'),
+						   (4,'ke','11-19-2001'),
+						   (5,'poo','11-19-2002'),
+						   (6,'maha','11-19-2001');
+
+select * from date_tab
+
+select GETDATE()
+
+select YEAR(getdate())
+
+select name,year(dob) from date_tab
+
+select MONTH(getdate())
+
+select name,month(dob) from date_tab
+
+select day(getdate())
+
+select name,day(dob) from date_tab
+
+select name,year(dob) as year,
+			month(dob) as month,
+			day(dob) as day  from date_tab
+
+--datepart() --to fetch any part of date
+select DATEPART(yy,getdate())
+
+select name,DATEPART(yy,dob) year from date_tab
+select name,DATEPART(mm,dob) month from date_tab
+select name,DATEPART(dd,dob) day from date_tab --day
+select name,DATEPART(hh,dob) hours from date_tab --hours
+
+select DATEPART(mm,getdate())
+select DATEPART(dd,getdate())
+select DATEPART(hh,getdate())
+select DATEPART(MINUTE,getdate())
+select DATEPART(SECOND,getdate())
+select DATEPART(MILLISECOND,getdate())
+
+
+
+
+select DATENAME(dw,getdate())  --day of week  --monday
+select DATENAME(mm,getdate())  --mongth name --oct
+
+select name,DATEname(dw,dob) dayofweek from date_tab
+select name,DATEname(mm,dob) dayofmonth from date_tab
+
+--				datepart, start date, end date
+select DATEDIFF(yy,'11-19-2000',getdate()) --mm/dd/year year differences
+select DATEDIFF(mm,'11-19-2000',getdate()) --mm/dd/year months diff
+
+select name,DATEdiff(yy,dob,getdate()) age from date_tab
+
+select DATEADD(dd,5,getdate())
+
+select name,DATEadd(yy,5,dob) age from date_tab --ading 5 years
+
+select EOMONTH(getdate()) --end of month
+
+select DATENAME(dw,EOMONTH(getdate())) 
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+--conversion function
+		
+		-->cast()
+		-->convert()
+
+select 'immu'+'imran'
+
+select 'immu'+10
+
+select 'immu'+'10'
+
+select 'immu'+cast(100 as varchar(100))
+
+select 'immu'+convert(varchar(10),100)
+
+select 10+20
+
+select * from date_tab
+
+select dob from date_tab
+
+select convert(varchar(20),dob) from date_tab
+
+select convert(varchar(20),dob,101) from date_tab  --mm/dd/yy
+
+select convert(varchar(20),dob,102) from date_tab  --yy.mm.dd
+
+select convert(varchar(20),dob,103) from date_tab   --dd/mm/yy
+
+select convert(varchar(20),dob,104) from date_tab	--dd.mm.yy
+
+select convert(varchar(20),dob,105) from date_tab   --dd-mm-yy
+
+select convert(varchar(20),dob,106) from date_tab   --dd month name(nov) yy
+
+select convert(varchar(20),dob,107) from date_tab	--nov 19,2000
+
+select convert(varchar(20),dob,108) from date_tab	
+
+
+select convert(varchar(20),dob,114) from date_tab   --upto 114 
+
+-------------------------------------------------------------------------------------
+
+--null functions
+
+		--isnull()
+		--coalesce()
+
+create table null_example(id int, name varchar(10), sal money,com int)
+insert into null_example values(1,'immu',10000,1000),
+							    (2,'immu',70000,2000),
+								(3,'immu',80000,3000),
+								(4,'immu',80000,7000),
+								(5,'immu',30000,60),
+								(6,'immu',40000,6),
+								(7,'immu',10000,null),
+								(8,'immu',30000,null);
+
+select * from null_example
+
+
+select *,sal+com from null_example
+
+select *,sal+isnull(com,0) from null_example
+
+
+create table coalesce_table(id int, val1 int, val2 int, val3 int, val4 int)
+insert into coalesce_table values(1,1000,null,null,null),
+							     (2,null,1000,null,null),
+							   	 (3,null,null,1000,null),
+								 (4,2000,null,null,null),
+								 (5,null,null,1000,null),
+								 (6,1000,2,4,6),
+								 (7,null,null,null,null)
+
+select * from coalesce_table
+
+select id,coalesce(val1,val2,val3,val4) from coalesce_table
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+
+--logical functions
+		--iff
+		--choose
+
+
+select * from students
+
+select sid,sname,iif(scalarship>20000,'good','bad') status from students 
+
+select CHOOSE(3,'a','b','c','d','e')
+------------------------------------------------------------------------------------------
+--rank
+		--row_number()
+		--rank()
+		--dense_rank()
+
+select ROW_NUMBER() over(order by cid desc) roll_num,* from students
+
+select dense_rank() over(order by cid desc) rank,* from students --it gives same value fr duplicate values
+
+select Rank() over(order by cid desc) roll_num,* from students --same as dense rank ( it consider logical order if 1 rank peoples hav 2 mem the 2 rank will be skip
+
+
+select *,ROW_NUMBER() over(order by cid desc) roll_num, 
+	   dense_rank() over(order by cid desc) rank,
+	   Rank() over(order by cid desc) roll_num from students
+
+
+--display the table who scored second rank
+select * from (
+	
+	select *,dense_rank() over(order by cid desc) rank from students)as temp_tab where rank=2; --we cant use alias name thats y use dup table 
+
+
+
+	
+select *,ROW_NUMBER() over(partition by loc order by sid desc) rank from students
+
+select *,dense_rank() over(partition by loc order by sid desc) rank from students
+
+select *,rank() over(partition by loc order by sid desc) rank from students
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+--merge funs
+--insert delete update
+create table src_tab(id int,name varchar(20), loc varchar(20), sal int)
+
+create table dis_tab(id int,name varchar(20), loc varchar(20), sal int)
+
+insert into src_tab values(1,'immu','bnglor',20000),(2,'ummi','hyd',30000),(3,'soor','atp',40000),(4,'jaga','ap',50000);
+
+select * from src_tab
+
+select * from dis_tab
+
+merge into dis_tab d
+using src_tab s
+on d.id=s.id
+when not matched then
+insert(id,name,loc,sal) values(s.id,s.name,s.loc,s.sal)
+when matched then
+update set id=s.id, name=s.name, loc=s.loc, sal=s.sal
+when not matched by source then
+delete;
+
+insert into src_tab values(5,'raj','mumbai',50000),(6,'koti','pune',40000)
+
+update src_tab set sal=25000 where id=1
+
+delete from src_tab where id=4
+
+select * from src_tab
+
+merge into dis_tab d
+using src_tab s
+on d.id=s.id
+when not matched then
+insert(id,name,loc,sal) values(s.id,s.name,s.loc,s.sal)
+when matched then
+update set id=s.id, name=s.name, loc=s.loc, sal=s.sal
+when not matched by source then
+delete;
+
+select * from src_tab
+select * from dis_tab
+
+
+
+insert into src_tab values(7,'sree','guntur',40000),(8,'ram','pune',30000)
+
+delete from src_tab where id in(1,2,3,5)
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+--identity(statind val, increment)
+
+create table ident_tab(id int identity(1,1),
+						name varchar(10),
+						loc varchar(20))
+
+insert into ident_tab values('immu','hyd')
+
+select * from ident_tab
+
+insert into ident_tab values('ummi','hyd'),('soor','bnglor')
+
+dbcc checkident(ident_tab,reseed,10)
+
+insert into ident_tab values('kr','hyd')
+
+insert into ident_tab values('suri','hyd')
+
+--->delete  --> insert--> 13 or 11
+--->truncate --> insert--> 13 or 1
+
+delete from ident_tab
+
+insert into ident_tab values('immu','hyd')
+
+select * from ident_tab -->continue 13
+
+truncate table ident_tab
+
+insert into ident_tab values('immu','hyd')
+
+select * from ident_tab -->starts from 1
+
+insert into ident_tab values (2,'kr','hdpur') --An explicit value for the identity column in table 'ident_tab' can only be specified when a column list is used and IDENTITY_INSERT is ON.
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+--sequence--to generate an autoincrement num
+		-- WE SHOULD not pass the values in b/w in identity
+		--but we can pass in seq
+
+create sequence myseq
+start with 1
+increment by 1
+
+
+create table seq_tab(id int, name varchar(20),loc varchar(20))
+
+insert into seq_tab values(next value for myseq,
+							'immu',
+							'hyd')
+
+select * from seq_tab
+
+insert into seq_tab values(next value for myseq,'raj','bng')
+
+insert into seq_tab values(next value for myseq,'raju','ch')
+
+insert into seq_tab values(2,'rajuu','ch') 
+
+
+create sequence myseq1
+start with 11
+increment by 1
+minvalue 10
+maxvalue 15
+
+create table seq_tab1(id int, name varchar(20),loc varchar(20))
+
+
+insert into seq_tab1 values(next value for myseq1,'raj','bng')
+
+select * from seq_tab1
+
+create sequence myseq1
+start with 11
+increment by 1
+minvalue 10
+maxvalue 15
+
+
+insert into seq_tab1 values(next value for myseq1,'raj','bng')
+insert into seq_tab1 values(next value for myseq1,'raj','bng')
+insert into seq_tab1 values(next value for myseq1,'raj','bng')
+insert into seq_tab1 values(next value for myseq1,'raj','bng')
+insert into seq_tab1 values(next value for myseq1,'raj','bng') --The sequence object 'myseq1' has reached its minimum or maximum value. Restart the sequence object to allow new values to be generated.
+
+--cycle
+--cache
+create sequence myseq2
+start with 11
+increment by 1
+minvalue 10
+maxvalue 15
+cycle
+cache
+
+insert into seq_tab1 values(next value for myseq2,'raj','bng')
+insert into seq_tab1 values(next value for myseq2,'raj','bng')
+insert into seq_tab1 values(next value for myseq2,'raj','bng')
+insert into seq_tab1 values(next value for myseq2,'raj','bng')
+insert into seq_tab1 values(next value for myseq2,'raj','bng') --The sequence object 'myseq1' has reached its minimum or maximum value. Restart the sequence object to allow new values to be generated.
+insert into seq_tab1 values(next value for myseq2,'raj','bng')
+insert into seq_tab1 values(next value for myseq2,'raj','bng')
+
+select * from seq_tab1
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+---synonym
+
+create table AdventuteWorksDWBuildVersion(id int, name varchar(20))
+
+select * from AdventuteWorksDWBuildVersion
+
+create synonym AWBV for AdventuteWorksDWBuildVersion
+
+select * from AWBV
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+--pagination --fetching set of rows
+
+
+create table pagination(id int identity,
+						name varchar(10),
+						loc varchar(20))
+
+insert into pagination values('immu','hyd'),('immu','hyd'),('immu','hyd'),('immu','hyd'),('immu','hyd'),('immu','hyd'),('immu','hyd'),('immu','hyd'),('immu','hyd'),('immu','hyd'),('immu','hyd')
+
+
+select * from pagination
+
+select * from pagination where id between 10 and 15
+
+select * from pagination order by  id 
+offset 10 rows
+fetch next 3 rows only
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+
+--derived table
+-- here the table is not created, not inserted, and not deleted automatically it performs all operations while the query is running,,after running if we wantto access the dummytab we throws an exception
+select * from employee
+
+alter table employee add comm money 
+
+select * from (select eid,sal+isnull(comm,0) as total from  employee) as dummytab where total>25000 --where dummy table is a derived table
+
+select * from dummytab --Invalid object name 'dummytab'. bcaz it is temp table
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+--temp tables
+
+			-->local  -># ,only currect session,multiple table with same name but in different session 
+			-->global ->## ,all sessions,only one ,home session must be active then only we can access wherever
+
+--local
+create table #localtemp(id int,name varchar(20))
+
+insert into #localtemp values(100,'kr')
+
+select * from #localtemp
+
+--globlal
+create table ##globaltab(id int,namr varchar(20))
+
+insert into ##globaltab values(100,'kr')
+
+
+select * from ##globaltab
+
+
+
+/*
+--temp tables are tables which stores temporarly
+--The data will be stores in systemdatabases-->tempdb
+
+-->SINGLE hash(#)                --> double hash(##)
+
+-->life spam of a local is		 --> for all the sessions
+  only current session
+
+-->with the same we can create	 -->not possible 	
+   multiple table in different 
+   sessions
+
+-->we cant access the table in   --> we can access in multiple sessions
+   another session
+
+-->if we drop the home sessions we cant access the tables either it may be local or goblal
+
+*/
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+
+--CTE == COMMON TABLE EXPRESSIONS
+--	  ==  IT IS temporary result set, which can be used for recursive purpose
+--	  ==  
+
+select * from employee
+	
+ ;with cn 
+ as 
+ (select * from employee)
+ select * from cn
+ 
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+ /*
+
+ operators
+ 1.arithmetic (+,-,*,%,/)
+ 2.assignment(=)
+ 3.comparision (< , > , <= , >= , <> , !> , !< ) 
+ 4.logical(and or not in like between)
+ 5.set (union, union all, intersect, except)
+ 6.wild card (%,_)
+ 7.compound  (+= , -= , *=, %= , /=)
+
+ */
+
+ -- 1.arithmetic
+		--+ , - , * , % , /
+		select 20+2
+		select 20-2
+		select 20*2
+		select 20%2
+		select 20/2
+--2.assignment =
+		select * from employee where ename='kr' 
+
+--3 comparision
+	-- > , < , <= , >= , <> , !< , !>
+	select * from employee where sal>30000
+	select * from employee where sal<30000
+	select * from employee where sal>=30000
+	select * from employee where sal<=30000
+	select * from employee where sal<>30000
+	select * from employee where sal!>30000
+	select * from employee where sal!<30000
+--4 logical
+--and or between in not like
+    select * from employee where sal>10000 AND job='PRO'
+	select * from employee where sal>30000 OR job='PRO'
+	select * from employee where sal BETWEEN 10000 AND 30000  
+	select * from employee where sal NOT BETWEEN 10000 AND 30000  
+	select * from employee where DNO IN(100,101)	    
+
+
+--5 WILD CARD
+	--%-->MULTIPLE CHARACTERS
+	--_-->single characters
+	select * from employee where ename like 's%'
+	select * from employee where ename like '_r%'	
+
+--6 set
+--	union all  --> it allows dup distinct
+--  union		-->only distinct
+--  intersect	-->common
+--  except	    -->it allows that are preset in  1st table only bt not in second one
+
+create table tab1(id int, name varchar(20),sal int)
+insert into tab1 values(1,'immu',10),(3,'immu',10),(5,'immu',10),(4,'immu',10),(2,'immu',10)
+select * from tab1
+
+create table tab2(id int, name varchar(20),sal int)
+insert into tab2 values(1,'immu',10),(3,'immu',10),(8,'immu',10),(9,'immu',10),(2,'immu',10)
+select * from tab2 
+
+--union all
+select * from tab1
+union all
+select * from tab2
+
+
+--union 
+select * from tab1
+union
+select * from tab2
+
+--intersect
+select * from tab1
+intersect
+select * from tab2
+
+--except
+select * from tab1
+except
+select * from tab2
+
+
+---compound 
+
+/*
+
++= ,  -+ , *= , /+ , %= ,
+
+*/
+
+declare @var1 int = 10
+--set @var += 5
+set @var1 =@var1+5
+select @var1
+
+
+declare @var2 int = 10
+set @var2 -= 5
+select @var2
+-------------------------------------------------------------
+--copying table
+select * from employee
+ 
+select * from employee1 --Invalid object name 'employee1'.
+
+select * into employee1 from employee
+
+select * from employee1
+
+select eid,ename,sal  into employe2 from employee
+
+select * from employe2
+
+--copying whole structure(only structure not data)
+
+select * into emp3 from employee where 1=2  
+
+select * from emp3
+
+--copying req cols
+
+select eid,ename,sal into emp4 from employee where 1=2 
+
+select * from emp4
+
+--copying the data from old copied table to new copied table 
+insert into emp4 select * from employe2
+
+select * from emp4
+--copying req data from old tab to new data
+insert into emp4 select eid,ename, sal from employee
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+--view --.>virtual table/imaginary table
+	 	-->is a db obj
+		--> doesnt have physical existences
+		--> to prove set of access only (to provide security for req cols)
+	
+
+CREATE TABLE VIEWTAB(ID INT, NAME VARCHAR(10))
+INSERT INTO VIEWTAB VALUES(1,'IMMU'),(2,'IMMU'),(3,'IMMU'),(4,'IMMU'),(5,'IMMU')
+SELECT * FROM VIEWTAB
+
+create view v_id
+as
+select id from VIEWTAB
+
+select * from v_id
+
+sp_helptext v_id  --displays the base table
+
+alter view v_id with encryption
+as
+select id from VIEWTAB
+
+sp_helptext v_id --The text for object 'v_id' is encrypted.
+
+select *into viewtab1 from VIEWTAB
+
+select * from viewtab1
+
+drop table VIEWTAB
+
+select * from v_id   /*Invalid object name 'VIEWTAB'.
+						Msg 4413, Level 16, State 1, Line 276
+						Could not use view or function 'v_id' because of binding errors. */
+
+select * into viewtab from viewtab1
+
+select * from viewtab
+
+select * from v_id 
+
+alter view v_id with schemabinding
+as
+select id from dbo.VIEWTAB  --we must use schema name before the table name 
+							--it will not allow * in the select statement
+
+drop table viewtab --Cannot DROP TABLE 'viewtab' because it is being referenced by object 'v_id'.
+				   --if we want to drop a table we must need to drop view before droping the table
+
+drop view v_id
+
+drop table viewtab
+
+--with check option
+--2 types
+		--simple view   --on single tab
+		--complex view	--on multiple tab --non updatable view/ read only
+												
+ 
+
+CREATE TABLE checktab(ID INT, NAME VARCHAR(10),loc varchar(10))
+INSERT INTO checktab VALUES(1,'IMMU','hyd'),(2,'IMMU','hyd'),(3,'IMMU','hyd'),(4,'IMMU','hyd'),(5,'IMMU','bng')
+SELECT * FROM checktab
+
+create view ck_tab
+as
+SELECT id,NAME FROM checktab
+
+SELECT * FROM ck_tab
+
+
+update checktab set name='soor' where id=2
+
+SELECT * FROM checktab
+SELECT * FROM ck_tab --effeted to the view
+
+insert into ck_tab values(6,'kr')
+
+SELECT * FROM checktab
+SELECT * FROM ck_tab --effeted
+
+create view ck_vv1
+as
+select * from checktab where loc='bng'
+
+select * from ck_vv1
+
+insert into ck_vv1 values(6,'bhar','bng')
+
+select * from ck_vv1
+
+insert into ck_vv1 values(9,'bhar','atp')
+
+select * from ck_vv1
+
+select * from checktab
+
+alter view ck_vv1
+as
+select * from checktab where loc='bng' with check option
+
+insert into ck_vv1 values(10,'aaa','bng')
+
+insert into ck_vv1 values(11,'abc','hyd') --The attempted insert or update failed because the target view either specifies WITH CHECK OPTION or spans a view that specifies WITH CHECK OPTION and one or more rows resulting from the operation did not qualify under the CHECK OPTION constraint.
+										  --The statement has been terminated.
+
+
+
+
+
+
+
+CREATE TABLE checktab1(ID INT, NAME VARCHAR(10),loc varchar(10))
+INSERT INTO checktab1 VALUES(1,'ummi','hyd'),(2,'ummi','hyd'),(3,'ummi','hyd'),(4,'ummi','hyd'),(5,'ummi','bng')
+SELECT * FROM checktab1
+
+
+SELECT * FROM checktab
+SELECT * FROM checktab1
+
+
+select c1.NAME,c2.id
+from checktab c1 inner join checktab1 c2
+on c1.ID=c2.ID
+
+create view com_v
+as
+select c1.NAME,c2.id
+from checktab c1 inner join checktab1 c2
+on c1.ID=c2.ID
+   
+select * from com_v
+
+insert into com_v values('maha',7) --View or function 'com_v' is not updatable because the modification affects multiple base tables.
+
+update checktab set name='poo' where id=5
+
+update com_v set name='pooji' where id=5
+
+select * from checktab
+select * from com_v 
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+--can we create a view on another view  --yes
+
+create view com_vv
+as
+select name from com_v 
+
+select * from com_vv
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+--types of columns
+
+create table typecol(id int identity,      --identity
+					name varchar(20),		--normal col
+					sal int,				--nc
+					com int,				--nc
+					loc varchar(20),		--nc
+					ts as sal+com);			--computed col
+
+insert into typecol values('immu',20000,1000,'hyd')
+					
+select * from typecol
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+--cross join
+
+create table table1(id int identity,      --identity
+					name varchar(20),		--normal col
+					sal int,				--nc
+					com int,				--nc
+					loc varchar(20),		--nc
+					ts as sal+com,		--computed col
+					tid int);
+
+insert into table1 values('immu',20000,1000,'hyd',8),('immu',20000,1000,'hyd',7),('immu',20000,1000,'hyd',12),('immu',20000,1000,'hyd',13),('immu',20000,1000,'hyd',14),('immu',20000,1000,'hyd',15)
+					
+select * from table1
+
+create table table2(cid int,				
+					name varchar(20),		--normal col
+					sal int,				--nc					
+					loc varchar(20))		--nc					
+
+insert into table2 values(10,'immu',20000,'hyd'),(11,'immu',20000,'hyd'),(12,'immu',20000,'hyd'),(13,'immu',1000,'hyd'),(14,'immu',1000,'hyd'),(18,'immu',1000,'hyd')
+					
+select * from table1 t1 cross join table2 t2
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+--self join
+select * from table1
+
+select t1.name empname,t2.name mgnt
+from table1 t1, table1 t2
+where t1.id=t2.tid
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
