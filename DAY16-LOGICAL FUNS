@@ -1,0 +1,10 @@
+--logical functions
+		--iff
+		--choose
+
+
+select * from students
+
+select sid,sname,iif(scalarship>20000,'good','bad') status from students 
+
+select CHOOSE(3,'a','b','c','d','e')
