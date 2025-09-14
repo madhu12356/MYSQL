@@ -1,0 +1,38 @@
+functions  --->set of sql stmts
+
+      1] system define functions
+            --> single value(row) system define functions
+                      -->string 
+                            -->length()   -->select length('immu')
+                            -->lower()   -->select lower('IMMU')
+                            -->upper()   -->select upper('immu')
+                            -->left(str,n)    -->select left('immu',2)  o/p-->im
+                            -->right(str,n)   -->select right('immu',2) o/p-->mu
+                            -->reverse(str)   -->select reverse('immu') o/p-->ummi
+                            -->charindex()  -->to find the index position of a particular character
+                                            -->matching and counting operations will be performed internally
+                                            -->it stops the operations when the first finding values is occured !!! to avoid this conflict we need to mention the  1st finging index so it will starts operation  after given index
+                                            
+                                            --> select charindex('o','hello')  o/p-->5
+                                              
+                                            --> select charindex('l','hello',3)  o/p-->4 {second occurances value of index}
+                            
+                            -->substring  --> fetching  a part of a str frm main str
+                                           -- select substring('imranimmu',6,4)  immu
+                                                            str,starting index ,length of req str
+                           
+                      -->number
+                      -->date
+                      -->conversion
+                      -->null
+                      -->logical
+                      -->rank fns
+            --> group/multi value system defined
+                      -->aggregate fns
+                            -->max
+                            -->min
+                            -->sum
+                            -->avg
+                            --->count
+      2] user define functions
+      
