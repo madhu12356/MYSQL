@@ -1,0 +1,221 @@
+--constrains
+---null
+
+create table null_tab(id int,
+		      name varchar(20) null,
+		      sal int);
+
+insert into null_tab values(1,null,10000);
+
+insert into null_tab values(null,null,null);
+
+select * from null_tab
+
+--not null ---. it wonts null values
+
+--while creating a table here I'm giving not noll to the int col
+create table nn_tab(it int not null,
+		    name varchar(10),
+		    sal int);
+
+insert into nn_tab values(1,null,10000);
+
+insert into nn_tab values(null,null,10000); --Cannot insert the value NULL into column 'it', table 'master.dbo.nn_tab'; column does not allow nulls. INSERT fails.
+
+insert into nn_tab values(1,null,10000); -- it allows duplicates bt it doesnot allow only null vaalues
+
+select * from nn_tab
+
+--after creating a table here I'm making not null to the id col
+create table nn_tab1(id int,
+		     name varchar(10),
+		     sal int);
+
+alter table nn_tab1 alter column id int not null; 
+
+select * from nn_tab1
+
+insert into nn_tab1 values(1,null,10000);
+
+insert into nn_tab1 values(null,null,10000); --Cannot insert the value NULL into column 'id', table 'master.dbo.nn_tab1'; column does not allow nulls. INSERT fails.
+
+
+--primary key
+	--no null values
+	--no duplicates
+	--only one pk
+	--we cant apply pk on nullable cols
+
+--while creating a table
+create table pk_tab(id int primary key,
+		    name varchar(10),
+		    sal int);
+
+insert into pk_tab values(1,null,10000);
+
+insert into pk_tab values(null,null,10000); --Cannot insert the value NULL into column 'id', table 'master.dbo.pk_tab'; column does not allow nulls. INSERT fails.
+
+insert into pk_tab values(1,null,10000); --Violation of PRIMARY KEY constraint 'PK__pk_tab__3213E83F85AB919F'. Cannot insert duplicate key in object 'dbo.pk_tab'. The duplicate key value is (1).
+
+create table pk2_tab(id int primary key,
+		     name varchar(10) primary key,
+		     sal int)				--Cannot add multiple PRIMARY KEY constraints to table 'pk2_tab'.
+
+
+--after creating table
+
+create table pk_tab1(id int,
+		     name varchar(10) ,
+		     sal int)
+
+alter table pk_tab1 add primary key(id); --Cannot define PRIMARY KEY constraint on nullable column in table 'pk_tab1'
+
+alter table pk_tab1 alter column id int not null;
+
+alter table pk_tab1 add primary key(id);
+
+insert into pk_tab1 values(1,null,100000) 
+
+insert into pk_tab1 values(1,null,100000) -- Cannot insert duplicate key in object 'dbo.pk_tab1'.
+
+
+--unique
+	--only one null value
+	--no duplicates
+	--table allows multiple unique keys
+	--it can apply on nullable col
+
+--while creating table
+create table uk_tab(id int unique,
+			name varchar(10),
+			loc varchar(20))
+	
+insert into uk_tab values(1,null,'mysour');
+
+insert into uk_tab values(1,null,'mysour'); -- Cannot insert duplicate key in object 'dbo.uk_tab'. The duplicate key value is (1)
+
+insert into uk_tab values(null,null,'mysour')
+
+insert into uk_tab values(null,null,'mysour')-- Cannot insert duplicate key in object 'dbo.uk_tab'. The duplicate key value is (<NULL>).
+
+
+select * from uk_tab
+
+create table uk_tab1(id int unique,
+			 name varchar(10),
+			 did int unique);
+
+--after creating table
+create table uk_tab_after(id int, 
+			 name varchar(10))
+
+alter table uk_tab_after add unique(id);
+
+
+--check
+	--it checks the condition if cond is true thn insert the values else it throws error
+
+--while creating table
+create table ck_tab(id int,
+			name varchar(10),
+			sal money check(sal<=20000));
+
+insert into ck_tab values (1,null,10000);
+
+insert into ck_tab values (2,null,21000); --The INSERT statement conflicted with the CHECK constraint "CK__ck_tab__sal__1C1D2798"
+
+select * from ck_tab
+
+--after creating table
+
+create table ck_tab1(id int,
+			name varchar(10),
+			sal money);
+
+alter table ck_tab1 add check(sal<=20000)
+
+insert into ck_tab1 values (1,null,10000);
+
+insert into ck_tab1 values (2,null,21000); --The INSERT statement conflicted with the CHECK constraint "CK__ck_tab1__sal__1E05700A".
+
+--default
+
+--while creating table
+
+create table def_tab(id int ,
+			 name varchar(10),
+			loc varchar(10) default 'hyd');
+
+insert into def_tab values(1,null) --Column name or number of supplied values does not match table definition. bcaz table need exact values as much as having in table
+
+insert into def_tab(id,name) values(1,null)
+
+select * from def_tab
+
+insert into def_tab values(2,'immu','bnglor') --it will return bnglor (overriden)
+
+
+--after creating table
+
+create table def_tab1(id int,
+					  name varchar(10),
+					  loc varchar(20))
+
+alter table def_tab1 add default 'hyd' for loc;
+
+insert into def_tab1 values(1,null) --Column name or number of supplied values does not match table definition.
+
+insert into def_tab1(id,name) values(1,null)
+
+select * from def_tab1
+
+insert into def_tab1 values(2,'immu','bnglor')
+
+
+---foreign key
+
+create table emp(eid int primary key,
+			name varchar(20));
+
+insert into emp values(1,'immu'),(2,'ummi'),(3,'soor'),(4,'k');
+
+select * from emp
+
+
+
+--while creating table 
+create table prod(pid int,
+		pname varchar(10),
+		eid int foreign key references emp(eid));
+
+insert into prod values(100,'lap',2);
+
+insert into prod values(101,'lap-top',2);
+
+select * from prod 
+
+select * from emp
+
+insert into prod values(103,'phn',5); --The INSERT statement conflicted with the FOREIGN KEY constraint "FK__prod__eid__25A691D2". The conflict occurred in database "master", table "dbo.emp", column 'eid'.
+
+insert into prod values(104,'real',null); --null will be allowed
+
+--after creating the table
+
+create table prod1(pid int,
+		pname varchar(20),
+		eid int);
+
+alter table prod1 add foreign key(eid) references emp(eid);
+
+insert into prod1 values(100,'lap',2);
+
+insert into prod1 values(101,'lap-top',2);
+
+select * from prod1 
+
+select * from emp
+
+insert into prod1 values(103,'phn',5); --The INSERT statement conflicted with the FOREIGN KEY constraint "FK__prod__eid__25A691D2". The conflict occurred in database "master", table "dbo.emp", column 'eid'.
+
+insert into prod1 values(104,'real',null); --null will be allowed
