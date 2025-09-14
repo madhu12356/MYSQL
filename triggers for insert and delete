@@ -1,0 +1,41 @@
+--trigger for insert
+create table tabletri(id int,name nvarchar(10),age int)
+insert into tabletri values(1,'imu',22),(2,'imu',23),(3,'imu',24),(4,'imu',25),(5,'imu',20)
+create table tableaudit(id int , audit nvarchar(50))
+select * from tabletri
+select * from tableaudit
+ALTER TABLE tableaudit drop column id 
+ALTER TABLE tableaudit add id INT IDENTITY(1,1)
+
+create trigger tabletri_trigger
+on tabletri
+for insert
+as
+begin
+	declare @id int
+	select @id=id from inserted
+	insert into tableaudit values('new id ' + cast(@ID as nvarchar(10)) + ' is added at '+cast(getdate() as nvarchar(20)))
+
+end
+
+insert into tabletri values(9,'ummi',20);
+select * from tabletri
+select id,audit from tableaudit
+
+--trigger for delet
+
+alter trigger tabletri_deltrigger
+on tabletri
+for delete
+as
+begin
+	declare @id int
+	select @id= id from deleted
+	
+	insert into tableaudit values (' id = ' + CAST(@id as varchar(10)) + ' is deleted at '+ cast(getdate() as varchar(20))) 
+
+end
+
+delete from tabletri where id=9;
+select * from tabletri
+select id,audit from tableaudit
