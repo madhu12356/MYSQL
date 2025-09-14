@@ -1,0 +1,100 @@
+/*
+
+ operators
+ 1.arithmetic (+,-,*,%,/)
+ 2.assignment(=)
+ 3.comparision (< , > , <= , >= , <> , !> , !< ) 
+ 4.logical(and or not in like between)
+ 5.set (union, union all, intersect, except)
+ 6.wild card (%,_)
+ 7.compound  (+= , -= , *=, %= , /=)
+
+ */
+
+ -- 1.arithmetic
+		--+ , - , * , % , /
+		select 20+2
+		select 20-2
+		select 20*2
+		select 20%2
+		select 20/2
+--2.assignment =
+		select * from employee where ename='kr' 
+
+--3 comparision
+	-- > , < , <= , >= , <> , !< , !>
+	select * from employee where sal>30000
+	select * from employee where sal<30000
+	select * from employee where sal>=30000
+	select * from employee where sal<=30000
+	select * from employee where sal<>30000
+	select * from employee where sal!>30000
+	select * from employee where sal!<30000
+--4 logical
+--and or between in not like
+    select * from employee where sal>10000 AND job='PRO'
+	select * from employee where sal>30000 OR job='PRO'
+	select * from employee where sal BETWEEN 10000 AND 30000  
+	select * from employee where sal NOT BETWEEN 10000 AND 30000  
+	select * from employee where DNO IN(100,101)	    
+
+
+--5 WILD CARD
+	--%-->MULTIPLE CHARACTERS
+	--_-->single characters
+	select * from employee where ename like 's%'
+	select * from employee where ename like '_r%'	
+
+--6 set
+--	union all  --> it allows dup distinct
+--  union		-->only distinct
+--  intersect	-->common
+--  except	    -->it allows that are preset in  1st table only bt not in second one
+
+create table tab1(id int, name varchar(20),sal int)
+insert into tab1 values(1,'immu',10),(3,'immu',10),(5,'immu',10),(4,'immu',10),(2,'immu',10)
+select * from tab1
+
+create table tab2(id int, name varchar(20),sal int)
+insert into tab2 values(1,'immu',10),(3,'immu',10),(8,'immu',10),(9,'immu',10),(2,'immu',10)
+select * from tab2 
+
+--union all
+select * from tab1
+union all
+select * from tab2
+
+
+--union 
+select * from tab1
+union
+select * from tab2
+
+--intersect
+select * from tab1
+intersect
+select * from tab2
+
+--except
+select * from tab1
+except
+select * from tab2
+
+
+---compound 
+
+/*
+
++= ,  -+ , *= , /+ , %= ,
+
+*/
+
+declare @var1 int = 10
+--set @var += 5
+set @var1 =@var1+5
+select @var1
+
+
+declare @var2 int = 10
+set @var2 -= 5
+select @var2
