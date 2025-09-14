@@ -1,0 +1,13 @@
+
+--types of columns
+
+create table typecol(id int identity,      --identity
+					name varchar(20),		--normal col
+					sal int,				--nc
+					com int,				--nc
+					loc varchar(20),		--nc
+					ts as sal+com);			--computed col
+
+insert into typecol values('immu',20000,1000,'hyd')
+					
+select * from typecol
