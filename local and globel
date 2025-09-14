@@ -1,0 +1,26 @@
+create procedure pc_stud
+as
+begin
+	create table #tbllocal(id int, name varchar(10))
+
+	insert into #tbllocal values(1,'kr'),(2,'immu')
+
+	select * from #tbllocal	
+end
+
+	select * from #tbllocal	 --Invalid object name '#tbllocal'.
+
+
+
+
+create procedure pc_stud1
+as
+begin
+	create table ##tblglobel(id int, name varchar(10))
+
+	insert into ##tblglobel values(1,'kr'),(2,'immu')
+
+	select * from ##tblglobel	
+end
+
+select * from ##tblglobel	 -- possible
