@@ -1,0 +1,48 @@
+--merge funs
+--insert delete update
+create table src_tab(id int,name varchar(20), loc varchar(20), sal int)
+
+create table dis_tab(id int,name varchar(20), loc varchar(20), sal int)
+
+insert into src_tab values(1,'immu','bnglor',20000),(2,'ummi','hyd',30000),(3,'soor','atp',40000),(4,'jaga','ap',50000);
+
+select * from src_tab
+
+select * from dis_tab
+
+merge into dis_tab d
+using src_tab s
+on d.id=s.id
+when not matched then
+insert(id,name,loc,sal) values(s.id,s.name,s.loc,s.sal)
+when matched then
+update set id=s.id, name=s.name, loc=s.loc, sal=s.sal
+when not matched by source then
+delete;
+
+insert into src_tab values(5,'raj','mumbai',50000),(6,'koti','pune',40000)
+
+update src_tab set sal=25000 where id=1
+
+delete from src_tab where id=4
+
+select * from src_tab
+
+merge into dis_tab d
+using src_tab s
+on d.id=s.id
+when not matched then
+insert(id,name,loc,sal) values(s.id,s.name,s.loc,s.sal)
+when matched then
+update set id=s.id, name=s.name, loc=s.loc, sal=s.sal
+when not matched by source then
+delete;
+
+select * from src_tab
+select * from dis_tab
+
+
+
+insert into src_tab values(7,'sree','guntur',40000),(8,'ram','pune',30000)
+
+delete from src_tab where id in(1,2,3,5)
