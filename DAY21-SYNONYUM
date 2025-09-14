@@ -1,0 +1,27 @@
+---synonym
+
+create table AdventuteWorksDWBuildVersion(id int, name varchar(20))
+
+select * from AdventuteWorksDWBuildVersion
+
+create synonym AWBV for AdventuteWorksDWBuildVersion
+
+select * from AWBV
+
+--pagination --fetching set of rows
+
+
+create table pagination(id int identity,
+						name varchar(10),
+						loc varchar(20))
+
+insert into pagination values('immu','hyd'),('immu','hyd'),('immu','hyd'),('immu','hyd'),('immu','hyd'),('immu','hyd'),('immu','hyd'),('immu','hyd'),('immu','hyd'),('immu','hyd'),('immu','hyd')
+
+
+select * from pagination
+
+select * from pagination where id between 10 and 15
+
+select * from pagination order by  id 
+offset 10 rows
+fetch next 3 rows only
