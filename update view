@@ -1,0 +1,56 @@
+--> update the data in joins view by using triggers 
+
+select * from insted_tab_emp
+select * from insted_tab_dep
+
+create view view_update_insted_tab_dept_emp
+as
+select id,name,gender,deptname
+from insted_tab_emp e join insted_tab_dep d
+on e.deptid=d.deptid
+
+select * from view_update_insted_tab_dept_emp
+update view_update_insted_tab_dept_emp set name='pooji',deptname='sw' where id=4 --View or function 'view_update_insted_tab_dept_emp' is not updatable because the modification affects multiple base tables.
+
+--possible through triggers
+
+alter trigger tr_View_update_insted_tab_dept_emp
+on View_update_insted_tab_dept_emp
+instead of update
+as
+begin
+	if(UPDATE(id))
+	begin
+		raiserror('id cant update',16,1)
+		return
+	end
+	if(UPDATE(deptname))
+	begin
+		declare @deptid int
+		select @deptid= deptid from insted_tab_dep join inserted on inserted.deptname= insted_tab_dep.deptname
+		
+		if(@deptid is null)
+		begin
+			raiserror('invalid id',16,1)
+			return
+		end
+
+		update insted_tab_emp set deptid=@deptid from inserted join insted_tab_emp on inserted.id=insted_tab_emp.id
+
+	end
+	if(UPDATE(gender))
+	begin
+		update insted_tab_emp set gender = inserted.gender from inserted join insted_tab_emp on inserted.id=insted_tab_emp.id		  
+	end
+	if(UPDATE(name))
+	begin
+		update insted_tab_emp set name = inserted.name from inserted join insted_tab_emp on inserted.id=insted_tab_emp.id		  
+	end
+end
+
+
+select * from view_update_insted_tab_dept_emp
+update view_update_insted_tab_dept_emp set name='pdooji',deptname='hr' where id=4 --View or function 'view_update_insted_tab_dept_emp' is not updatable because the modification affects multiple base tables.
+
+select * from insted_tab_dep
+select * from insted_tab_emp
