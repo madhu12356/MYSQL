@@ -1,0 +1,149 @@
+--view --.>virtual table/imaginary table
+	 	-->is a db obj
+		--> doesnt have physical existences
+		--> to prove set of access only (to provide security for req cols)
+	
+
+CREATE TABLE VIEWTAB(ID INT, NAME VARCHAR(10))
+INSERT INTO VIEWTAB VALUES(1,'IMMU'),(2,'IMMU'),(3,'IMMU'),(4,'IMMU'),(5,'IMMU')
+SELECT * FROM VIEWTAB
+
+create view v_id
+as
+select id from VIEWTAB
+
+select * from v_id
+
+sp_helptext v_id  --displays the base table
+
+alter view v_id with encryption
+as
+select id from VIEWTAB
+
+sp_helptext v_id --The text for object 'v_id' is encrypted.
+
+select *into viewtab1 from VIEWTAB
+
+select * from viewtab1
+
+drop table VIEWTAB
+
+select * from v_id   /*Invalid object name 'VIEWTAB'.
+						Msg 4413, Level 16, State 1, Line 276
+						Could not use view or function 'v_id' because of binding errors. */
+
+select * into viewtab from viewtab1
+
+select * from viewtab
+
+select * from v_id 
+
+alter view v_id with schemabinding
+as
+select id from dbo.VIEWTAB  --we must use schema name before the table name 
+							--it will not allow * in the select statement
+
+drop table viewtab --Cannot DROP TABLE 'viewtab' because it is being referenced by object 'v_id'.
+				   --if we want to drop a table we must need to drop view before droping the table
+
+drop view v_id
+
+drop table viewtab
+
+--with check option
+--2 types
+		--simple view   --on single tab
+		--complex view	--on multiple tab --non updatable view/ read only
+												
+ 
+
+CREATE TABLE checktab(ID INT, NAME VARCHAR(10),loc varchar(10))
+INSERT INTO checktab VALUES(1,'IMMU','hyd'),(2,'IMMU','hyd'),(3,'IMMU','hyd'),(4,'IMMU','hyd'),(5,'IMMU','bng')
+SELECT * FROM checktab
+
+create view ck_tab
+as
+SELECT id,NAME FROM checktab
+
+SELECT * FROM ck_tab
+
+
+update checktab set name='soor' where id=2
+
+SELECT * FROM checktab
+SELECT * FROM ck_tab --effeted to the view
+
+insert into ck_tab values(6,'kr')
+
+SELECT * FROM checktab
+SELECT * FROM ck_tab --effeted
+
+create view ck_vv1
+as
+select * from checktab where loc='bng'
+
+select * from ck_vv1
+
+insert into ck_vv1 values(6,'bhar','bng')
+
+select * from ck_vv1
+
+insert into ck_vv1 values(9,'bhar','atp')
+
+select * from ck_vv1
+
+select * from checktab
+
+alter view ck_vv1
+as
+select * from checktab where loc='bng' with check option
+
+insert into ck_vv1 values(10,'aaa','bng')
+
+insert into ck_vv1 values(11,'abc','hyd') --The attempted insert or update failed because the target view either specifies WITH CHECK OPTION or spans a view that specifies WITH CHECK OPTION and one or more rows resulting from the operation did not qualify under the CHECK OPTION constraint.
+										  --The statement has been terminated.
+
+
+
+
+
+
+
+CREATE TABLE checktab1(ID INT, NAME VARCHAR(10),loc varchar(10))
+INSERT INTO checktab1 VALUES(1,'ummi','hyd'),(2,'ummi','hyd'),(3,'ummi','hyd'),(4,'ummi','hyd'),(5,'ummi','bng')
+SELECT * FROM checktab1
+
+
+SELECT * FROM checktab
+SELECT * FROM checktab1
+
+
+select c1.NAME,c2.id
+from checktab c1 inner join checktab1 c2
+on c1.ID=c2.ID
+
+create view com_v
+as
+select c1.NAME,c2.id
+from checktab c1 inner join checktab1 c2
+on c1.ID=c2.ID
+   
+select * from com_v
+
+insert into com_v values('maha',7) --View or function 'com_v' is not updatable because the modification affects multiple base tables.
+
+update checktab set name='poo' where id=5
+
+update com_v set name='pooji' where id=5
+
+select * from checktab
+select * from com_v 
+
+
+--can we create a view on another view  --yes
+
+create view com_vv
+as
+select name from com_v 
+
+select * from com_vv
