@@ -1,0 +1,37 @@
+--Deterministic Non deterministic
+ -->D
+	--> always returns same result until unless u change the input
+	--> ex:- count(*) , avg(), sum(), min(),max(),square()
+-->ND
+	-->return diff result
+	-->getdate() current_timestamp
+	--> Rand() is a nondeterministic
+-----
+--with Encrypition
+SELECT * FROM tblstud
+
+create alter  function encry_fun()
+returns table
+with encryption
+as
+return (select * from tblstud)
+
+select * from encry_fun()	
+sp_helptext encry_fun --after encryption -->The text for object 'encry_fun' is encrypted.
+
+--schemabinding
+
+select * into dummytabstud from tblstud
+
+drop table dummytabstud
+
+select * from dummytabstud
+
+create function schema_fun()
+returns table
+with schemabinding
+as
+return (select id,name,dob,gender from dbo.dummytabstud)
+
+select * from dbo.schema_fun()
+drop table dummytabstud--Cannot DROP TABLE 'dummytabstud' because it is being referenced by object 'schema_fun'.
