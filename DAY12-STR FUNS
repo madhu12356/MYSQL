@@ -1,0 +1,102 @@
+/*
+string functions 
+	
+	1.len()
+	2.left()
+	3.right()
+	4.lower()
+	5.upper()
+	6.lower()
+	7.reverse()
+	8.replicate()
+	9.space()
+	10.charindex()
+	11.substring()
+	12.replace()
+	13.stuff()
+*/
+
+--len(str) --to find the length of given string
+
+select LEN('immu') as length
+ 
+select * from students
+
+select sname, len(sname) as name_len from students 
+  
+
+--lower(str) --to display str in lower case
+
+select lower('IMMU')
+
+select sname, lOWER(sname) as LOWERCASE from students 
+
+--upper case --to display str in upper case
+
+
+select upper('IMMU')
+
+select upper('IMmu')
+
+select sname, upper(sname) as upperCASE from students 
+
+--left(str,n) --fetches left side n no of char frm given str
+
+select left('IMMU',2)
+
+select sname, left(sname,2) as leftside from students 
+
+
+--right(str,n) --fetches right side n no of char frm given str
+
+select right('IMMU',2)
+
+select sname, right(sname,2) as rightside from students 
+
+--reverse(str)
+
+select REVERSE('immu')
+
+select sname, reverse(sname) as reverse from students 
+
+--replicate(str,n) --repeates the given string n no of times
+
+select REPLICATE('immu',2);
+
+select REPLICATE('immu ',2);
+
+select sname, replicate(sname,2) as repeats from students 
+
+--space(number)
+
+select space(2)
+
+select REPLICATE('immu'+SPACE(2),2);
+
+select sname, replicate(sname+SPACE(3),2) as repeats from students 
+
+--charindex()--to find index position of a particular char
+			 --matching 
+			 --counting
+select CHARINDEX('a','we are indians') --4
+
+select CHARINDEX('a','we are indians',5) --12
+
+--sub string (str,start index ,len of sub str) -- to take a part of a syr frm main ster
+
+select SUBSTRING('imranimmu',6,4)
+
+--replace() -- to replace any part of main str woth new str
+
+
+select REPLACE('immu','i','u')
+
+select REPLACE('immu','m','u')
+
+select REPLACE('immu','mm','u')
+
+select REPLACE('imran shaik imran','imran','immu') --replace all occurences
+
+--stuff(str, index , len of str,replace str)--replaces only req occurences
+
+select stuff('imran shaik imran',1,5,'immu') 
