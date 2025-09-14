@@ -1,0 +1,44 @@
+---update trigger
+
+alter trigger tabletri_update
+on tabletri
+for update
+as
+begin
+	declare @id int
+	declare @newname varchar(20),@oldname varchar(20)
+	declare @newage int, @oldage int
+
+	declare @auditstr varchar(1000)
+
+	select * into #temptabletri from inserted
+
+	while(exists(select id from #temptabletri))
+	begin
+		set @auditstr=''
+
+		select top 1 @id=id,@newname=name,@newage=age from #temptabletri
+
+		select @oldname=name,@oldage=age from deleted where id=@id
+
+		set @auditstr='emp id= '+cast(@id as varchar(10))+' changed '
+		if(@newname<>@oldname)
+			set @auditstr=@auditstr+'name from ' +@oldname+ ' to ' + @newname
+		if(@newage<>@oldage)
+			set @auditstr=@auditstr+' age from ' +cast(@oldage as varchar(20))+ ' to ' + cast(@newage as varchar(20))
+
+		insert into tableaudit values(@auditstr)	
+		
+		delete from #temptabletri where id=@id
+	end
+end
+
+
+select * from tabletri
+select id,audit from tableaudit
+
+alter table tableaudit alter column audit nvarchar(1000)
+
+update tabletri set name='imran' where id=5;
+update tabletri set age=27 where id=5;
+update tabletri set name='imran',age=30 where id=2
