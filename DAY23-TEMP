@@ -1,0 +1,44 @@
+--temp tables
+
+			-->local  -># ,only currect session,multiple table with same name but in different session 
+			-->global ->## ,all sessions,only one ,home session must be active then only we can access wherever
+
+--local
+create table #localtemp(id int,name varchar(20))
+
+insert into #localtemp values(100,'kr')
+
+select * from #localtemp
+
+--globlal
+create table ##globaltab(id int,namr varchar(20))
+
+insert into ##globaltab values(100,'kr')
+
+
+select * from ##globaltab
+
+
+
+/*
+--temp tables are tables which stores temporarly
+--The data will be stores in systemdatabases-->tempdb
+
+-->SINGLE hash(#)                --> double hash(##)
+
+-->life spam of a local is	  	 --> for all the sessions
+  only current session
+
+-->with the same we can create	 -->not possible 	
+   multiple table in different 
+   sessions
+
+-->we cant access the table in   --> we can access in multiple sessions
+   another session
+
+-->if we drop the home sessions we cant access the tables either it may be local or goblal
+
+*/
+
+	
+ 
