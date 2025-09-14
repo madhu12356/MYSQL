@@ -1,0 +1,30 @@
+--cross join
+
+create table table1(id int identity,      --identity
+					name varchar(20),		--normal col
+					sal int,				--nc
+					com int,				--nc
+					loc varchar(20),		--nc
+					ts as sal+com,		--computed col
+					tid int);
+
+insert into table1 values('immu',20000,1000,'hyd',8),('immu',20000,1000,'hyd',7),('immu',20000,1000,'hyd',12),('immu',20000,1000,'hyd',13),('immu',20000,1000,'hyd',14),('immu',20000,1000,'hyd',15)
+					
+select * from table1
+
+create table table2(cid int,				
+					name varchar(20),		--normal col
+					sal int,				--nc					
+					loc varchar(20))		--nc					
+
+insert into table2 values(10,'immu',20000,'hyd'),(11,'immu',20000,'hyd'),(12,'immu',20000,'hyd'),(13,'immu',1000,'hyd'),(14,'immu',1000,'hyd'),(18,'immu',1000,'hyd')
+					
+select * from table1 t1 cross join table2 t2
+
+
+--self join
+select * from table1
+
+select t1.name empname,t2.name mgnt
+from table1 t1, table1 t2
+where t1.id=t2.tid
