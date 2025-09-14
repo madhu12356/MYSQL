@@ -1,0 +1,45 @@
+select * from tblstud
+create index myindex on tblstud(gender desc,id desc)
+select  gender,id from tblstud
+drop index tblstud.myindex
+
+--cluster index 
+create table clustab( [id] int primary key,
+					  [name] varchar(10),
+					  [age] int)
+--> for primary key automatically it creates the cluster 
+--> iff i insert the data in unorder the data will be inserted in the form of ordered list
+insert into clustab values(2,'imu',23)
+insert into clustab values(1,'imu',22)
+insert into clustab values(4,'imu',21)
+insert into clustab values(5,'imu',24)
+insert into clustab values(3,'imu',25)
+
+select * from clustab
+			
+create clustered index clusttabindex on clustab(age) -->Cannot create more than one clustered index on table 'clustab'. Drop the existing clustered index 'PK__clustab__3213E83F81BD17DD' before creating another.
+
+drop index clustab.[PK__clustab__3213E83F81BD17DD] --> cant delet bcaz it is a pk-->An explicit DROP INDEX is not allowed on index 'clustab.PK__clustab__3213E83F81BD17DD'. It is being used for PRIMARY KEY constraint enforcement.
+												   --> rignt  clich on index name under the indexes and thn delete it and it delets the primary key also 
+
+alter table clustab alter column id int not null
+alter table clustab add constraint c_id primary key(id)
+
+alter table clustab add constraint c_age unique(age) -->
+alter table clustab drop constraint c_age
+alter table clustab add constraint c_age unique clustered(age) --> right clich nd thn click properties  the unique is checked 
+														       --> before executing unique clusted we need to delet the  previous indexes 
+															   
+
+select * into manualclustindex from clustab
+
+select * from manualclustindex
+
+create clustered index manualclusttabindex on manualclustindex(age)
+
+select age from manualclustindex
+
+
+create nonclustered index nonclustind on manualclustindex(id)
+
+drop index manualclustindex.[nonclustind]
